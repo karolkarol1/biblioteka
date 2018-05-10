@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>LapKom - <?php echo $title;
+        
+        require_once "connect.php";
+        try
+        {
+          $pdo = new PDO('mysql:host='.$host.';dbname='.$db_name, $db_user, $db_password);
+          $pdo->exec("SET CHARACTER SET utf8");
+        }
+        catch(PDOException $e)
+        {
+            echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
+        }
+        $arrayOfValues = array_keys($_COOKIE);
+        $questionMarks = join(",", array_pad(array(), count($arrayOfValues), "?"));
+        
+        $category=$pdo->prepare("SELECT * FROM s_kategorie WHERE id_rodzica = 0 ORDER BY kolejnosc");
+        $category->execute();
+        $result=$category->fetchAll();
+
+        $sql ="SELECT p_id, obrazek, nazwa, cena FROM s_produkty  WHERE p_id IN ($questionMarks)";
+        $sth = $pdo->prepare($sql);
+        $sth->execute($arrayOfValues);
+        $koszyk = $sth->fetchAll();
+        $suma=0;
+        $liczbaprod=0;
+        foreach ($koszyk as $row){
+            
+            $suma+=$row[3]*$_COOKIE[$row[0]];
+        $liczbaprod+=$_COOKIE[$row[0]];
+
+        }
+            $suma = number_format($suma, 2, ',', '');
+
+
+        ?>
+    </title>
+    <link rel="stylesheet" href="main.css">
+    <script type="text/javascript" src="odlicz.js"></script>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<link rel=icon href="img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon">
+
+      
+  </head>
+  <body onload="odlicz()">
+      <header>
+        <div id="logo"><a href="index.php"><img src="img/header.png" alt="logo"/></a></div>
+        <div id="wyszukaj"><form method="post" action="szukaj.php?id=<?php echo $result[0]['id_rodzica']; ?>"><input class="szukaj" name="tekst" type="search"         placeholder="Wpisz szukaną frazę...">
+                  <select name = "po_czym">
+                  <option selected = "selected" value="0">Wszystkie kategorie</option>
+                  <?php 
+                    foreach($result as $row){
+                  ?>
+                  <option value="<?php echo $row['id_rodzica'];?>"><?php echo $row['nazwa'];?> </option>
+                  <?php } ?>
+               </select>
+        <input class="btnszukaj" type="submit" value=""></form>
+        </div>
+    <div id="koszyk"><span class="liczba"><?php echo $liczbaprod;
+ ?></span><a href="koszyk.php"><img src="img/basket.png" alt="koszyk"><p class="suma"><?php echo $suma;
+        ?> zł</p></a></div>
+    
+    <div id="plogowania">
+    <?php
+
+        session_start();
+        
+
+        
+    if (isset ($_SESSION['login'])){
+
+        echo "<a href=\"#\"><img src=\"img/member.png\" alt=\"logowanie\">Witaj ".$_SESSION['login']."<br>Ustawienia</a>";
+        
+    echo '<div id="dplog">
+    <ul class="plog">
+        <li class="plog"><a href="ustawienia.php">Ustawienia</a></li>
+        <li class="plog"><a href="zamowienia.php">Historia zamówień</a></li>
+        <li class="plog"><a href="ustawienia.php?akcja=wyloguj">Wyloguj</a></li>  ';
+        if (isset ($_SESSION['admin']))
+            echo '<li class="plog"><a href="admin/zamowienia.php">Panel admina</a></li>';
+        echo '    
+        </ul>
+       </div> ';
+
+        
+    }
+    else {
+         echo '<a href="panel.php"><img src="img/member.png" alt="logowanie">Zaloguj się<br>Zarejestruj się</a>';
+    } 
+    
+          ?>
+        
+        </div>
+</header>
+    <nav><ul>
+        <li><a href="index.php">Strona Główna</a></li>
+        <li><a href="regulamin.php">Regulamin</a></li>
+        <li><a href="odbiorosobisty.php">Odbiór osobisty</a></li>
+        <li><a href="onas.php">O nas</a></li>
+        <li><a href="kontakt.php">Kontakt</a></li>
+    </ul></nav>
+<main>
+    <aside id="menu">
+        <ul>
+        <?php 
+            foreach($result as $row){
+        ?>            
+        <li><a href="index.php?id=<?php echo $row['id']; ?>"><img src="img/kategorie/<?php echo $row['obrazek']; ?>" alt="kategoria laptopy"><?php echo $row['nazwa'];?></a>
+            <ul class="sub-menu">
+                <?php
+                $tmp=$pdo->query("SELECT * FROM s_kategorie WHERE id_rodzica='".$row['id']."' ORDER BY kolejnosc");
+                foreach($tmp as $rows){
+                ?>    
+                <li class="sub-menu"><a href="index.php?id=<?php echo $rows['id']; ?>"><?php echo $rows['nazwa']; ?></a></li> 
+            <?php } ?>
+           </ul>
+        </li>    
+        <?php } ?>
+        </ul>
+    </aside>
