@@ -5,7 +5,7 @@
     </p>
     
     </div><div class="ftmid"><p class="title">Adres firmy:</p><p>
-
+<!--dsadsaasd-->
 LapKom Sp. z o.o.
 <br>ul. Sienkiewicza 4
 02-366 Warszawa

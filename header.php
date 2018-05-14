@@ -7,6 +7,7 @@
         require_once "connect.php";
         try
         {
+            //tescik
           $pdo = new PDO('mysql:host='.$host.';dbname='.$db_name, $db_user, $db_password);
           $pdo->exec("SET CHARACTER SET utf8");
 		  //plik
