@@ -126,7 +126,7 @@ main
     background:#fff;
     padding: 0px 20px 100px 0px;
 }
-#produktopis{
+#ksiazkaopis{
     display:flex;
     float:right;
 }
@@ -229,7 +229,7 @@ label{
     margin-bottom:10px;
 }
 
-div.produkt {
+div.ksiazka {
 background: url(./images/tlo.png) repeat-x 0 0;
 
 
@@ -247,11 +247,11 @@ font-size: 15px;
     border:1px solid #fff;
 }
 
-div.produkt img{margin-top:20px;margin-bottom:10px; max-width: 250px; max-height: 140px;}
+div.ksiazka img{margin-top:20px;margin-bottom:10px; max-width: 250px; max-height: 140px;}
 
 span.ile {font-size: 16px;font-weight:bold;}
 
-div.produkt:hover{
+div.ksiazka:hover{
 border:1px solid #E5E3E3; 
 border-radius:5px;
 
@@ -367,7 +367,7 @@ div.podzialp{
     padding:50px;
 }
 
-img.improdukt{
+img.imksiazka{
     float:left;
     margin-right:20px;
     max-width: 256px;

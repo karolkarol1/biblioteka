@@ -19,11 +19,11 @@
         $arrayOfValues = array_keys($_COOKIE);
         $questionMarks = join(",", array_pad(array(), count($arrayOfValues), "?"));
         
-        $category=$pdo->prepare("SELECT * FROM s_kategorie WHERE id_rodzica = 0 ORDER BY kolejnosc");
+        $category=$pdo->prepare("SELECT * FROM b_kategorie");
         $category->execute();
         $result=$category->fetchAll();
 
-        $sql ="SELECT p_id, obrazek, nazwa, cena FROM s_produkty  WHERE p_id IN ($questionMarks)";
+        $sql ="SELECT k_id, obrazek, nazwa, cena FROM b_ksiazki  WHERE k_id IN ($questionMarks)";
         $sth = $pdo->prepare($sql);
         $sth->execute($arrayOfValues);
         $koszyk = $sth->fetchAll();
@@ -111,15 +111,7 @@
         <?php 
             foreach($result as $row){
         ?>            
-        <li><a href="index.php?id=<?php echo $row['id']; ?>"><img src="img/kategorie/<?php echo $row['obrazek']; ?>" alt="kategoria laptopy"><?php echo $row['nazwa'];?></a>
-            <ul class="sub-menu">
-                <?php
-                $tmp=$pdo->query("SELECT * FROM s_kategorie WHERE id_rodzica='".$row['id']."' ORDER BY kolejnosc");
-                foreach($tmp as $rows){
-                ?>    
-                <li class="sub-menu"><a href="index.php?id=<?php echo $rows['id']; ?>"><?php echo $rows['nazwa']; ?></a></li> 
-            <?php } ?>
-           </ul>
+        <li><a href="index.php?id=<?php echo $row['id']; ?>"><?php echo $row['nazwa'];?></a>
         </li>    
         <?php } ?>
         </ul>

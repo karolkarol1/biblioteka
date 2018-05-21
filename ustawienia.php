@@ -9,7 +9,7 @@ if (isset ($_POST['bt'])){
 
     
     if (empty ($_POST['haslo'])){
-                         $sql = 'UPDATE s_uzytkownicy SET ulica=:ulica, miasto=:miasto, kodpocztowy=:kodpocztowy, telefon=:telefon where u_id=:id';
+                         $sql = 'UPDATE b_uzytkownicy SET ulica=:ulica, miasto=:miasto, kodpocztowy=:kodpocztowy, telefon=:telefon where u_id=:id';
 
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
@@ -29,7 +29,7 @@ $sth->execute(array(':ulica' => $_POST['ulica'], ':miasto' => $_POST['miasto'], 
            
         $nowypass = hash('sha256', $_POST['haslonowe']);
 
-                         $sql = 'UPDATE s_uzytkownicy SET ulica=:ulica, miasto=:miasto, kodpocztowy=:kodpocztowy, telefon=:telefon, haslo=:nowy where u_id=:id AND haslo=:haslo';
+                         $sql = 'UPDATE b_uzytkownicy SET ulica=:ulica, miasto=:miasto, kodpocztowy=:kodpocztowy, telefon=:telefon, haslo=:nowy where u_id=:id AND haslo=:haslo';
 
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
@@ -46,6 +46,10 @@ $sth->execute(array(':ulica' => $_POST['ulica'], ':miasto' => $_POST['miasto'], 
                     echo '<div class="error">Wprowadzone zmiany nie zostały zaktualizowane</div><br class="clearboth">';
   
           }
+          else{
+            echo '<div class="correct">Wprowadzone zmiany zostały zaktualizowane</div><br class="clearboth">';
+   
+          }
 }
 if (isset ($_GET['akcja'])){
     
@@ -61,7 +65,7 @@ header("Location: http://$host$uri/$extra");
 if (isset ($_SESSION['login'])){
     
     
-               $sql = 'SELECT ulica,miasto,kodpocztowy,telefon,haslo FROM s_uzytkownicy where u_id=:id';
+               $sql = 'SELECT ulica,miasto,kodpocztowy,telefon,haslo FROM b_uzytkownicy where u_id=:id';
 
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 

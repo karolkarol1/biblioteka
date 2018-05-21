@@ -39,7 +39,7 @@ require_once "connect.php";
    }
 
 
-$sql = 'INSERT INTO s_uzytkownicy VALUES (null, :login, :haslo, :imie, :nazwisko, :email, :ulica, :miasto, :kodpocztowy, :telefon, 0)';
+$sql = 'INSERT INTO b_uzytkownicy VALUES (null, :login, :haslo, :imie, :nazwisko, :email, :ulica, :miasto, :kodpocztowy, :telefon, 0)';
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
 
@@ -74,14 +74,14 @@ require_once "header.php";
    }
 
 
-$sql = 'select u_id, login, jestadminem from s_uzytkownicy where login = :u AND haslo = :p';
+$sql = 'select u_id, login, status from b_uzytkownicy where login = :u AND haslo = :p';
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
     
     $sth->execute(array(':u' => $_POST['login'], ':p' => $pass));
 $zalogowany = $sth->fetchAll();
 
-   // print_r($zalogowany);
+   print_r($zalogowany);
 
 
     

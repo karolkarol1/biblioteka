@@ -6,12 +6,12 @@
     
     </div><div class="ftmid"><p class="title">Adres firmy:</p><p>
 <!--dsadsaasd-->
-LapKom Sp. z o.o.
-<br>ul. Sienkiewicza 4
-02-366 Warszawa
+Biblioteka Miejska w Białymstoku
+<br>ul. Białostocka 4
+00-000 Białystok
 
-NIP: 525 24 10 088 </p></div><div class="ftright"><p class="title">Masz pytania?</p>
-    <p>Biuro obsługi klienta czynne od 8:00 do 21:00<br>Numer telefonu: 801 000 861</p></div></footer>
+NIP: 525 24 10 088 </p></div><div class="ftright"><p class="title">Godziny otwarcia</p>
+    <p>Poniedziałek-Piątek 10:00-18:00<br>Sobota 10:00-14:00</p></div></footer>
       
   </body>
 </html>

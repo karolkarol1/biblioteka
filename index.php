@@ -1,31 +1,45 @@
 <?php 
-
+require_once "connect.php";
 if (!isset($_GET['id'])) {
     
-    $title='Produkty, które warto kupić';             
+    $title='Książki, które warto wypożyczyć';             
                         }
 else {
         $id=$_GET['id'];
 
-    switch ($_GET['id']) {
-    case '1':
-       $title='Telefony';
-        break;
-    case '2':
-       $title='Komputery';
-        break;
-    case '3':
-       $title='Laptopy';
-        break;
-    case '4':
-       $title='Tablety';
-        break;    }
+
+
+
+        $sql = 'SELECT * FROM b_kategorie WHERE id = :id';
+    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    
+    
+    $sth->execute(array(':id' => $id));
+    
+    
+    $ksiazka = $sth->fetchAll();
+
+    if( !$ksiazka ) exit();
+    
+    
+$title = $ksiazka[0]['nazwa'];
+
+
+
+
+
+
+
+
+
+
+
     
 }
-    ;
+    
 
 require_once "header.php";
-require_once "connect.php";
+
 
 
    try
@@ -40,37 +54,42 @@ require_once "connect.php";
       echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
    }
   
-    if(empty($_GET['id'])) $sql = 'SELECT p_id, nazwa, obrazek, cena FROM s_produkty ORDER BY RAND() LIMIT 9';
+    if(empty($_GET['id']))
+    
+        $sql = 'SELECT k_id, tytul, obrazek FROM b_ksiazki ORDER BY RAND() LIMIT 9';
     else 
-        $sql = 'SELECT p_id, nazwa, obrazek, cena FROM s_produkty WHERE kat_id  = :id';
+        $sql = 'SELECT k_id, tytul, obrazek FROM b_ksiazki WHERE kat_id  = :id';
         $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         
-        if(empty($_GET['id'])) $sth->execute();
-        else $sth->execute(array(':id' => $id));
-        $produkt = $sth->fetchAll();
+        if(empty($_GET['id']))
+        $sth->execute();
+        else
+        $sth->execute(array(':id' => $id));
+        $ksiazka = $sth->fetchAll();
         echo "<article><h1>$title</h1>";
     
+        // print_r($ksiazka);
     
-        $category=$pdo->prepare("SELECT * FROM s_kategorie WHERE id_rodzica=$id");
-        $category->execute();
-        $result=$category->fetchAll();
+        // $category=$pdo->prepare("SELECT * FROM b_kategorie WHERE id=$id");
+        // $category->execute();
+        // $result=$category->fetchAll();
         
         foreach($result as $row){           
-            $test=$pdo->prepare('SELECT s_kategorie.id,s_produkty.kat_id,s_produkty.nazwa,s_produkty.cena,s_produkty.obrazek,s_produkty.p_id FROM s_kategorie INNER JOIN s_produkty ON s_kategorie.id=s_produkty.kat_id WHERE kat_id="'.$row['id'].'" ');
+            $test=$pdo->prepare('SELECT b_kategorie.id,b_ksiazki.kat_id,b_ksiazki.nazwa,b_ksiazki.cena,b_ksiazki.obrazek,b_ksiazki.k_id FROM b_kategorie INNER JOIN b_ksiazki ON b_kategorie.id=b_ksiazki.kat_id WHERE kat_id="'.$row['id'].'" ');
             $test->execute();
             $res=$test->fetchAll();
             foreach($res as $row){
-                echo "<a href=\"produkt.php?id=".$row['p_id']."\"><div class=\"produkt\"><span class=\"tytul\">".$row['nazwa']."</span><br><img src=\"img/produkty/".$row['obrazek']."\" alt=\"".$row['obrazek']."\"><br><span class=ile>".$row['cena']." zł</span></div></a>";
+                echo "<a href=\"ksiazka.php?id=".$row['k_id']."\"><div class=\"ksiazka\"><span class=\"tytul\">".$row['nazwa']."</span><br><img src=\"img/ksiazki/".$row['obrazek']."\" alt=\"".$row['obrazek']."\"><br><span class=ile>".$row['cena']." zł</span></div></a>";
             }
         }
 
-if( !$result && !$produkt ){
+if( !$result && !$ksiazka ){
     
-echo 'Brak produktów';
+echo 'Brak książek';
 }
 
-        foreach ($produkt as $row)
-               echo "<a href=\"produkt.php?id=".$row[0]."\"><div class=\"produkt\"><span class=\"tytul\">".$row[1]."</span><br><img src=\"img/produkty/".$row[2]."\" alt=\"".$row[1]."\"><br><span class=ile>".$row[3]." zł</span></div></a>";
+        foreach ($ksiazka as $row)
+               echo "<a href=\"ksiazka.php?id=".$row[0]."\"><div class=\"ksiazka\"><span class=\"tytul\">".$row[1]."</span><br><img src=\"img/ksiazki/".$row[2]."\" alt=\"".$row[1]."\"></div></a>";
 
         ?>
     

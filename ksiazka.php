@@ -60,8 +60,8 @@ $pdo->exec('SET NAMES utf8');
    }
 
 
-$sql = 'SELECT * FROM s_produkty
-    WHERE p_id = :id';
+$sql = 'SELECT * FROM b_ksiazki
+    WHERE k_id = :id';
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
 
