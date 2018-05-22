@@ -9,7 +9,7 @@ if (isset ($_GET['dodaj'])){
 	
 	$host  = $_SERVER['HTTP_HOST'];
 $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-$extra = 'produkt.php?id='.$_GET['dodaj'];
+$extra = 'ksiazka.php?id='.$_GET['dodaj'];
 header("Location: http://$host$uri/$extra");
 }
 
@@ -82,17 +82,17 @@ $opinie = $sth->fetchAll();
 
 ?>
 
-<article><h1><?php echo $produkt[0]['nazwa'];?></h1>
+<article><h1><?php echo $produkt[0]['tytul'];?></h1>
     
     
 
-<img class="improdukt" src="img/produkty/<?php echo $produkt[0]['obrazek'];?>" alt="pamięć ram corsair"><span><?php echo $produkt[0]['opis'];?></span>
+<img class="improdukt" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"<span><?php echo $produkt[0]['opis'];?></span>
     <div id="produktopis">
 
-    <div class="cena">Cena: <span class="bold"><?php echo $produkt[0]['cena'];?></span><br>
+    <div class="cena">Cena: <span class="bold">x</span><br>
         <?php
 
-        echo "<form method=\"post\" action=\"produkt.php?dodaj=".$produkt[0]['p_id']."\"><input type=\"submit\" value=\"Dodaj do koszyka\"></form>";
+        echo "<form method=\"post\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\"><input type=\"submit\" value=\"Zarezerwuj książkę\"></form>";
 ?>
         </div>
     </div>
@@ -130,7 +130,7 @@ $sth->execute(array(':userid' => $_SESSION['id'], ':productid' => $_GET['id']));
            
         if($liczba>$liczba2){
 ?>
-          <form method = "post" action="produkt.php?id=<?php echo $_GET['id']?>">    
+          <form method = "post" action="ksiazka.php?id=<?php echo $_GET['id']?>">    
  <label>Opis:<br><textarea name="tresc" required></textarea></label>
 
 
