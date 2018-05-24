@@ -81,7 +81,7 @@ $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':u' => $_POST['login'], ':p' => $pass));
 $zalogowany = $sth->fetchAll();
 
-   print_r($zalogowany);
+   //print_r($zalogowany);
 
 
     

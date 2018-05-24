@@ -67,6 +67,8 @@ require_once "header.php";
         $sth->execute(array(':id' => $id));
         $ksiazka = $sth->fetchAll();
         echo "<article><h1>$title</h1>";
+
+
     
         // print_r($ksiazka);
     
@@ -80,6 +82,9 @@ require_once "header.php";
             $res=$test->fetchAll();
             foreach($res as $row){
                 echo "<a href=\"ksiazka.php?id=".$row['k_id']."\"><div class=\"ksiazka\"><span class=\"tytul\">".$row['nazwa']."</span><br><img src=\"img/ksiazki/".$row['obrazek']."\" alt=\"".$row['obrazek']."\"><br><span class=ile>".$row['cena']." zł</span></div></a>";
+               
+
+                 
             }
         }
 
