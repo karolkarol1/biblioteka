@@ -19,7 +19,7 @@
         $arrayOfValues = array_keys($_COOKIE);
         $questionMarks = join(",", array_pad(array(), count($arrayOfValues), "?"));
         
-        $category=$pdo->prepare("SELECT * FROM b_kategorie");
+        $category=$pdo->prepare("SELECT b_kategorie.id, b_kategorie.nazwa, COUNT(b_ksiazki.kat_id) as liczba FROM b_ksiazki LEFT JOIN b_kategorie ON b_ksiazki.kat_id = b_kategorie.id GROUP BY b_ksiazki.kat_id");
         $category->execute();
         $result=$category->fetchAll();
 
@@ -111,7 +111,7 @@
         <?php 
             foreach($result as $row){
         ?>            
-        <li><a href="index.php?id=<?php echo $row['id']; ?>"><?php echo $row['nazwa'];?></a>
+        <li><a href="index.php?id=<?php echo $row['id']; ?>"><?php echo $row['nazwa'].' ('.$row['liczba'].')';?></a>
         </li>    
         <?php } ?>
         </ul>

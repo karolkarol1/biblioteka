@@ -71,10 +71,13 @@ require_once "header.php";
 
     
         // print_r($ksiazka);
-    
-        // $category=$pdo->prepare("SELECT * FROM b_kategorie WHERE id=$id");
-        // $category->execute();
-        // $result=$category->fetchAll();
+        if(empty($_GET['id']))
+         $category=$pdo->prepare("SELECT * FROM b_kategorie");
+		 else
+         $category=$pdo->prepare("SELECT * FROM b_kategorie WHERE id=$id");
+
+         $category->execute();
+         $result=$category->fetchAll();
         
         foreach($result as $row){           
             $test=$pdo->prepare('SELECT b_kategorie.id,b_ksiazki.kat_id,b_ksiazki.nazwa,b_ksiazki.cena,b_ksiazki.obrazek,b_ksiazki.k_id FROM b_kategorie INNER JOIN b_ksiazki ON b_kategorie.id=b_ksiazki.kat_id WHERE kat_id="'.$row['id'].'" ');
