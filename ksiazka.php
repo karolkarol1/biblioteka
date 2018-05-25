@@ -93,7 +93,9 @@ $opinie = $sth->fetchAll();
       <h2>Autorzy:</h2>
       <h3>
         <?php
-        $zapytanie ='SELECT * FROM b_autor WHERE a_id = (SELECT a_id FROM b_autorzyksiazka WHERE k_id = :id)';
+        $zapytanie ='SELECT * FROM b_autor WHERE a_id IN (SELECT a_id FROM b_autorzyksiazka WHERE k_id = :id)';
+       
+
         $sth = $pdo->prepare($zapytanie, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':id' => $id));
         $autorzy = $opinie = $sth->fetchAll();
@@ -109,7 +111,8 @@ $opinie = $sth->fetchAll();
     <div class="cena"><br>
         <?php
 
-        echo "<form method=\"post\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\"><input type=\"submit\" value=\"Zarezerwuj książkę\"></form>";
+        echo "<form method=\"post\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\">
+        <input type=\"submit\" value=\"Zarezerwuj książkę\"></form> <br>";
 ?>
         </div>
     </div>
