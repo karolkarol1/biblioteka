@@ -126,9 +126,10 @@ $opinie = $sth->fetchAll();
           ?>
       </h3>
 
-    <div class="cena"><br>
-        <?php
 
+    <div ><br>
+        <?php
+        print "<h2>Dostepnych egzemplarzy:  {$produkt[0]['ilosc']}</h2> <br><br>";
         echo "<form method=\"post\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\">
         <input type=\"submit\" value=\"Zarezerwuj książkę\"></form> <br>";
 ?>
