@@ -10,7 +10,7 @@
             //tescik
           $pdo = new PDO('mysql:host='.$host.';dbname='.$db_name, $db_user, $db_password);
           $pdo->exec("SET CHARACTER SET utf8");
-		  //plik
+          //plik
         }
         catch(PDOException $e)
         {
@@ -101,7 +101,7 @@
     <nav><ul>
         <li><a href="index.php">Strona Główna</a></li>
         <li><a href="regulamin.php">Regulamin</a></li>
-        <li><a href="odbiorosobisty.php">Odbiór osobisty</a></li>
+       <!-- <li><a href="odbiorosobisty.php">Odbiór osobisty</a></li> -->
         <li><a href="onas.php">O nas</a></li>
         <li><a href="kontakt.php">Kontakt</a></li>
     </ul></nav>

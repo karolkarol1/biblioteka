@@ -86,10 +86,27 @@ $opinie = $sth->fetchAll();
     
     
 
-<img class="improdukt" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"<span><?php echo $produkt[0]['opis'];?></span>
+<img class="improdukt" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"<span><br><br><?php echo $produkt[0]['opis'];?></span>
+   
     <div id="produktopis">
+      <br>
+      <h2>Autorzy:</h2>
+      <h3>
+        <?php
+        $zapytanie ='SELECT * FROM b_autor WHERE a_id = (SELECT a_id FROM b_autorzyksiazka WHERE k_id = :id)';
+        $sth = $pdo->prepare($zapytanie, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':id' => $id));
+        $autorzy = $opinie = $sth->fetchAll();
+      
+            foreach ($autorzy as $key) {
+            print "{$key['imie']} {$key['nazwisko']} <br>";
 
-    <div class="cena">Cena: <span class="bold">x</span><br>
+
+          };
+          ?>
+      </h3>
+
+    <div class="cena"><br>
         <?php
 
         echo "<form method=\"post\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\"><input type=\"submit\" value=\"Zarezerwuj książkę\"></form>";
