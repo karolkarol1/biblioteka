@@ -6,8 +6,8 @@ if (isset ($_GET['dodaj'])){
     setcookie($_GET['dodaj'],1,time()+$int);
 
       
-	
-	$host  = $_SERVER['HTTP_HOST'];
+  
+  $host  = $_SERVER['HTTP_HOST'];
 $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 $extra = 'ksiazka.php?id='.$_GET['dodaj'];
 header("Location: http://$host$uri/$extra");
@@ -93,8 +93,9 @@ $opinie = $sth->fetchAll();
       <h2>Autorzy:</h2>
       <h3>
         <?php
+
         $zapytanie ='SELECT * FROM b_autor WHERE a_id IN (SELECT a_id FROM b_autorzyksiazka WHERE k_id = :id)';
-       
+        
 
         $sth = $pdo->prepare($zapytanie, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':id' => $id));
@@ -102,6 +103,23 @@ $opinie = $sth->fetchAll();
       
             foreach ($autorzy as $key) {
             print "{$key['imie']} {$key['nazwisko']} <br>";
+
+
+          };
+          ?>
+
+      </h3><h2>Wydawnictwo:</h2>
+      <h3>
+        <?php
+         $zapytanie ="SELECT nazwa_wydawnictwa FROM b_wydawnictwo WHERE w_id = '".$produkt[0]['wydawnictwo']."'";
+        
+
+        $sth = $pdo->prepare($zapytanie, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':id' => $id));
+        $wydawnictwo = $sth->fetchAll();
+      
+            foreach ($wydawnictwo as $key) {
+            print "{$key['nazwa_wydawnictwa']} <br>";
 
 
           };
