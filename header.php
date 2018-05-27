@@ -45,7 +45,6 @@
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <link rel=icon href="img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon">
-
       
   </head>
   <body onload="odlicz()">
@@ -80,7 +79,7 @@
     echo '<div id="dplog">
     <ul class="plog">
         <li class="plog"><a href="ustawienia.php">Ustawienia</a></li>
-        <li class="plog"><a href="zamowienia.php">Historia zamówień</a></li>
+        <li class="plog"><a href="rezerwacje.php">Rezerwacje</a></li>
         <li class="plog"><a href="ustawienia.php?akcja=wyloguj">Wyloguj</a></li>  ';
         if (isset ($_SESSION['admin']))
             echo '<li class="plog"><a href="admin/zamowienia.php">Panel admina</a></li>';

@@ -304,7 +304,7 @@ nav ul{
         list-style-type:none;
     margin: 0;
     padding: 5px 20px 5px 20px;
-    background: #497959 url(img/greenboard.png) center center;
+    background: #343333;
     
 }
 nav li {
@@ -313,12 +313,11 @@ nav li {
     padding:10px;
 
 }
-nav li a,nav li a:hover {color:#e9ebee;text-decoration: none;	font-family: "Walter Turncoat", cursive; font-size:20px;}
+nav li a,nav li a:hover {color:#e9ebee;text-decoration: none;	font-family: "Walter Turncoat", cursive;}
 
 nav li:hover{
-        /* background:#1c637f; */
+        background:#1c637f;
         border-radius:10px;
-        text-decoration: underline;
 
 
 }
