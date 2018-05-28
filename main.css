@@ -18,8 +18,8 @@ a:hover{
     text-decoration:underline;
 }
 header{
-padding:20px;
-background:#fff;
+    padding:20px;
+    background:#fff;
     display: flex;
     border-bottom:1px solid #e9ebee;
 }
@@ -231,6 +231,9 @@ label{
     display:block;
     margin-bottom:10px;
 }
+
+div.ksiazkawyszukaj img{margin-top:20px;margin-bottom:10px; max-width: 250px; max-height: 140px;}
+
 
 div.ksiazka {
 background: url(./images/tlo.png) repeat-x 0 0;

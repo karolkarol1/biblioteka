@@ -4,7 +4,7 @@
     <a href="http://instagram.com"><img src="img/instagram.png" alt="instagram"></a>
     </p>
     
-    </div><div class="ftmid"><p class="title">Adres firmy:</p><p>
+    </div><div class="ftmid"><p class="title">Adres:</p><p>
 <!--dsadsaasd-->
 Biblioteka Miejska w Białymstoku
 <br>ul. Białostocka 4

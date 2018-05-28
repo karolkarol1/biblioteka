@@ -50,20 +50,9 @@
   <body onload="odlicz()">
       <header>
         <div id="logo"><a href="index.php"><img src="img/header.png" alt="logo"/></a></div>
-        <div id="wyszukaj"><form method="post" action="szukaj.php?id=<?php echo $result[0]['id_rodzica']; ?>"><input class="szukaj" name="tekst" type="search"         placeholder="Wpisz szukaną frazę...">
-                  <select name = "po_czym">
-                  <option selected = "selected" value="0">Wszystkie kategorie</option>
-                  <?php 
-                    foreach($result as $row){
-                  ?>
-                  <option value="<?php echo $row['id_rodzica'];?>"><?php echo $row['nazwa'];?> </option>
-                  <?php } ?>
-               </select>
+        <div id="wyszukaj"><form method="post" action="szukaj.php"><input class="szukaj" name="tekst" type="search" placeholder="Wpisz szukaną frazę...">
         <input class="btnszukaj" type="submit" value=""></form>
         </div>
-    <div id="koszyk"><span class="liczba"><?php echo $liczbaprod;
- ?></span><a href="koszyk.php"><img src="img/basket.png" alt="koszyk"><p class="suma"><?php echo $suma;
-        ?> zł</p></a></div>
     
     <div id="plogowania">
     <?php

@@ -23,28 +23,6 @@ $id=$_GET['id'];
 $title = "Strona Główna";
 require_once "header.php";
 
-if (isset ($_POST['tresc']) && (isset ($_GET['id']))){
-    
-       try
-   {
-      $pdo = new PDO('mysql:host='.$host.';dbname='.$db_name, $db_user, $db_password);
-      
-
-   }
-   catch(PDOException $e)
-   {
-      echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
-   }
-
-
-$sql = 'INSERT INTO s_opinie VALUES (null, :uid, DEFAULT, :opis, :pid)';
-$sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-$sth->execute(array(':uid' => $_SESSION['id'], ':opis' => $_POST['tresc'], ':pid' => $_GET['id']));
-    
-    
-    
-
-}
 
    try
    {
@@ -70,15 +48,6 @@ $sth->execute(array(':id' => $id));
 
 $produkt = $sth->fetchAll();
 
-if( !$produkt ) exit();
-
-
-$sql2 = 'SELECT opis, imie FROM s_opinie o inner join s_uzytkownicy u on o.u_id = u.u_id where p_id= :id';
-$sth = $pdo->prepare($sql2, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-$sth->execute(array(':id' => $id));
-$opinie = $sth->fetchAll();
-
-//print_r($opinie);
 
 ?>
 
@@ -137,66 +106,6 @@ $opinie = $sth->fetchAll();
     </div>
             
 
-   <section><h2>Opinie</h2>
-
-    <?php
-       if (isset ($_SESSION['id'])){
-           $sql = 'select * from s_zamowienia z join s_zamowienia_produkty zp on (z.z_id=zp.id_zamowienia) where zp.id_produktu=:productid and z.u_id=:userid and z.czyoplacone=1';
-
-
-       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-
-
-$sth->execute(array(':userid' => $_SESSION['id'], ':productid' => $_GET['id']));
-      
-           
-           $liczba = $sth->rowCount();
-           
-
-           
-           
-                      $sql = 'select * from s_opinie where u_id=:userid and p_id=:productid';
-
-
-       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-
-
-$sth->execute(array(':userid' => $_SESSION['id'], ':productid' => $_GET['id']));
-    
-                      $liczba2 = $sth->rowCount();
-           
-
-           
-        if($liczba>$liczba2){
-?>
-          <form method = "post" action="ksiazka.php?id=<?php echo $_GET['id']?>">    
- <label>Opis:<br><textarea name="tresc" required></textarea></label>
-
-
-            <p><input type="submit" value="Wyślij opinię"></p>
-</form>
-<?php         }}
-           
-           
-       ?>
-   <table class="opinie"> 
-    <thead>
-           <tr><td>Kto</td><td>Opinia</td></tr>
-       </thead>
-    <tbody>
-        
-        <?php 
-     // print_r($opinie);
-
-        foreach ($opinie as $row)
-               echo "<tr><td>$row[1]</td><td>$row[0]</td></tr>";
-
-
-        ?>
-        
-    </tbody>
-    </table>   
-       </section> 
 </article>
 
   

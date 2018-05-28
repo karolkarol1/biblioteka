@@ -2,7 +2,6 @@
 $title = "Strona Główna";
 require_once "header.php";
 
-$id=$_POST['po_czym'];
 $t=$_POST['tekst'];
 
 require_once "connect.php";
@@ -20,15 +19,16 @@ require_once "connect.php";
       echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
    }
 
-if ($id==0) $sql = "select p_id, obrazek, nazwa, cena from s_produkty where nazwa LIKE :tekst";
-else 
-$sql = "select p_id, obrazek, nazwa, cena from s_produkty where kat_id IN (select id from s_kategorie where id_rodzica=:id) AND nazwa LIKE :tekst";
+$sql = "select k_id ,tytul, obrazek from b_ksiazki where tytul LIKE :tekst";
+
 
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
+$pdo->exec('SET NAMES utf8');
 
-if ($id==0) $sth->execute(array(':tekst' => "%".$t."%"));
-else $sth->execute(array(':tekst' => "%".$t."%",':id' => $id));
+
+$sth->execute(array(':tekst' => "%".$t."%"));
+
 $szukaj = $sth->fetchAll();
 if(!$szukaj ) exit();
 
@@ -39,12 +39,12 @@ if(!$szukaj ) exit();
     
 <table class="wyszukaj">
          <thead>
-     <tr><td>Zdjęcie</td><td>Nazwa produktu</td><td>Cena</td></tr>    
+     <tr><td>Okładka</td><td>Tytuł</td></tr>    
     </thead>
     <tbody>
         <?php
                 foreach ($szukaj as $row)
-               echo " <tr><td><a href=\"produkt.php?id=".$row[0]."\"><img src=\"img/produkty/".$row[1]."\" alt=\".$row[2].\"></a></td><td><a href=\"produkt.php?id=".$row[0]."\">".$row[2]."</a></td><td>".$row[3]." zł</td></tr>";
+               echo " <tr><td><div class='ksiazkawyszukaj'><a href=\"ksiazka.php?id=".$row[0]."\"><img src=\"img/ksiazki/".$row[2]."\" alt=\".$row[2].\"></a></div></td><td>".$row[1]."</td></tr>";
 
         ?>
         
