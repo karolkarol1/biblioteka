@@ -1,5 +1,4 @@
 <?php 
-session_start();
 if (!isset($_SESSION['admin'])) {
 exit();
 }
@@ -47,10 +46,10 @@ elseif($_SESSION['admin']==2){
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Zamówienia">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rezerwacje">
             <a class="nav-link" href="zamowienia.php">
             <i class="fa fa-fw fa-th"></i>
-            <span class="nav-link-text">Zamówienia</span>
+            <span class="nav-link-text">Rezerwacje</span>
             </a>
             </li>
             
@@ -115,52 +114,33 @@ elseif($_SESSION['admin']==2){
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Zamówienia">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Statystyki">
             <a class="nav-link" href="index.php">
             <i class="fa fa-area-chart"></i>
             <span class="nav-link-text">Statystyki</span>
             </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Zamówienia">
-            <a class="nav-link" href="zamowienia.php">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rezerwacje">
+            <a class="nav-link" href="rezerwacje.php">
             <i class="fa fa-fw fa-th"></i>
-            <span class="nav-link-text">Zamówienia</span>
+            <span class="nav-link-text">Rezerwacje</span>
             </a>
-            </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Zamówienia">
-            <a class="nav-link" href="partnerzy.php">
-            <i class="fa fa-fw fa-users"></i>
-            <span class="nav-link-text">Partnerzy</span>
-            </a>
-            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kategorie">
             <a class="nav-link" href="kategorie.php">
             <i class="fa fa-fw fa-align-justify"></i>
             <span class="nav-link-text">Kategorie</span>
             </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Produkty">
-            <a class="nav-link" href="produkty.php">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Książki">
+            <a class="nav-link" href="ksiazki.php">
             <i class="fa fa-fw fa-th-list"></i>
-            <span class="nav-link-text">Produkty</span>
+            <span class="nav-link-text">Książki</span>
             </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Użytkownicy">
             <a class="nav-link" href="uzytkownicy.php">
             <i class="fa fa-fw fa-users"></i>
             <span class="nav-link-text">Użytkownicy</span>
-            </a>
-            </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kody rabatowe">
-            <a class="nav-link" href="rabaty.php">
-            <i class="fa fa-fw fa-percent"></i>
-            <span class="nav-link-text">Kody rabatowe</span>
-            </a>
-            </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Opinie">
-            <a class="nav-link" href="opinie.php">
-            <i class="fa fa-fw fa-comments"></i>
-            <span class="nav-link-text">Opinie</span>
             </a>
             </li>
           </ul>

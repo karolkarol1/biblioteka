@@ -61,7 +61,7 @@ require_once "../connect.php";
                       </tfoot>
                       <tbody>
                             <?php
-                                $users = $pdo->query("SELECT * FROM s_uzytkownicy");
+                                $users = $pdo->query("SELECT * FROM b_uzytkownicy");
                                 foreach($users as $row){     
                             ?>
                             <tr><td><?php echo $row['u_id']; ?></td>
@@ -73,8 +73,8 @@ require_once "../connect.php";
                                 <td><?php echo $row['miasto']; ?></td>
                                 <td><?php echo $row['kodpocztowy']; ?></td>
                                 <td><?php echo $row['telefon']; ?></td>
-                                <td><?php if($row['jestadminem']==0) echo 'Klient'; elseif($row['jestadminem']==2) echo "Partner"; else echo 'Admin';?></td>
-                          <td><?php if($row['jestadminem']==0){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="add_a" value="Dodaj Admina"></form><?php }else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_a" value="Usuń Admina"></form><?php }?><br><?php if($row['jestadminem']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_p" value="Zabierz Partnera"></form><?php } else {?><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-partner="4" data-whatever="<?php echo $row['u_id']; ?>">Dodaj partnera</button><?php } ?><br><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_u" value="Usuń"></form></td></tr>
+                                <td><?php if($row['status']==0) echo 'Klient'; elseif($row['status']==2) echo "Partner"; else echo 'Admin';?></td>
+                          <td><?php if($row['status']==0){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="add_a" value="Dodaj Admina"></form><?php }else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_a" value="Usuń Admina"></form><?php }?><br><?php if($row['status']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_p" value="Zabierz Partnera"></form><?php } else {?><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-partner="4" data-whatever="<?php echo $row['u_id']; ?>">Dodaj partnera</button><?php } ?><br><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_u" value="Usuń"></form></td></tr>
                             <?php } 
                                 if(isset($_POST['del_u'])){ 
                                     $id=$_GET['id_user'];

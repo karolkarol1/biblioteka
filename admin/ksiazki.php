@@ -16,6 +16,11 @@ require_once "../connect.php";
         echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
     } 
 ?>
+  <link rel="stylesheet" href="docsupport/style.css">
+  <link rel="stylesheet" href="docsupport/prism.css">
+  <link rel="stylesheet" href="chosen.css">
+
+    <meta http-equiv="Content-Security-Policy" content="default-src &apos;self&apos;; script-src &apos;self&apos; https://ajax.googleapis.com; style-src &apos;self&apos;; img-src &apos;self&apos; data:">
 
 <div class="content-wrapper">
     <div class="container-fluid">
@@ -24,32 +29,54 @@ require_once "../connect.php";
         <li class="breadcrumb-item">
           <a href="index.php">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Zarządzanie Produktami</li>
+        <li class="breadcrumb-item active">Zarządzanie książkami</li>
       </ol>
       <!-- Example DataTables Card-->
     <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-table"></i> Dodaj produkt
+          <i class="fa fa-table"></i> Dodaj książkę
         </div>
         <div class="container">
-            <form class="form-signin" id="addProduct" method="POST" action="produkty.php" ENCTYPE="multipart/form-data"><br>
+            <form class="form-signin" id="addProduct" method="POST" action="ksiazki.php" ENCTYPE="multipart/form-data"><br>
                 <input type="text" name="nazwa" class="form-control" placeholder="Nazwa" required autofocus>
                 <input type="text" name="opis" class="form-control" placeholder="Opis" required>
                 <input type="text" name="cena" class="form-control" placeholder="Cena" required>
-                <br>
-                Wybierz podkategorię:  <select name="kat_id" required>
+                <select name="kat_id" class="form-control" required>
+                <option value="">Kategoria</option>
+
                     <?php
-                        $categorys=$pdo->query("SELECT A.id, B.nazwa AS nazwarodzica, A.nazwa AS nazwa FROM s_kategorie A, s_kategorie B WHERE A.id_rodzica = B.id ORDER BY nazwarodzica");
+                        $categorys=$pdo->query("SELECT id, nazwa from b_kategorie");
                 
                         foreach($categorys as $row){                 
                     ?>
-	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwarodzica'].'->'.$row['nazwa']; ?></option>
+	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwa']; ?></option>
                     
                     <?php }   
                     ?>
-                </select><br><br>
+                </select>
+                <br>
+                <div class="form-control">
+          <select data-placeholder="Autorzy" class="chosen-select" multiple tabindex="4">
+            <option value=""></option>
+
+
+                    <?php
+                        $autorzy=$pdo->query("SELECT a_id, imie, nazwisko from b_autor");
+                
+                        foreach($autorzy as $row){                 
+                    ?>
+	                   <option value="<?php echo $row['a_id']; ?>" ><?php echo $row['imie'].' '.$row['nazwisko']; ?></option>
+                    
+                    <?php }  ?>
+
+            <option value="United States">United States</option>
+
+          </select>
+        </div>
+                
+                <br><br>
                 <input type="file" name="userfile" required><br><br>
-                <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dodaj Produkt</button>
+                <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dodaj książkę</button>
             </form>
         </div>
         <?php 
@@ -83,38 +110,34 @@ require_once "../connect.php";
     </div>   
     <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-table"></i> Modyfikuj produkty</div>
+          <i class="fa fa-table"></i> Modyfikuj książkę</div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Nazwa</th>
-                  <th>Opis</th>
-                  <th>Cena</th>
-                  <th>ID kategorii</th>
-                  <th>Obrazek</th>
-                  <th>Operacje</th>
+                  <th>Tytuł</th>
+                  <th>Autorzy</th>
+                  <th>Kategoria</th>
+                  <th>Okładka</th>
                 </tr>
               </thead>
               <tfoot>
-                <tr>
-                  <th>ID</th>
-                  <th>Nazwa</th>
-                  <th>Opis</th>
-                  <th>Cena</th>
-                  <th>ID kategorii</th>
-                  <th>Obrazek</th>
-                  <th>Operacje</th>
+              <tr>
+              <th>ID</th>
+                  <th>Tytuł</th>
+                  <th>Autorzy</th>
+                  <th>Kategoria</th>
+                  <th>Okładka</th>
                 </tr>
               </tfoot>
               <tbody>
                 <?php
-                  $product=$pdo->query('SELECT * FROM s_produkty');
-                  foreach($product as $row){
+                  $ksiazki=$pdo->query('SELECT * FROM b_ksiazki');
+                  foreach($ksiazki as $row){
                 ?>
-                  <tr><td><?php echo $row['p_id']; ?></td><td><?php echo $row['nazwa']; ?></td><td><?php echo $row['opis']; ?></td><td><?php echo $row['cena']; ?></td><td><?php echo $row['kat_id']; ?></td><td><img src="../img/produkty/<?php echo $row['obrazek'];?>" alt="<?php echo $row['obrazek']; ?>" width="100" height="100"></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['p_id']; ?>">Edit</button><br><form method="POST" action="produkty.php?id_product=<?php echo $row['p_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
+                  <tr><td><?php echo $row['k_id']; ?></td><td><?php echo $row['tytul']; ?></td><td><?php echo $row['kat_id']; ?></td><td><img src="../img/ksiazki/<?php echo $row['obrazek'];?>" alt="<?php echo $row['obrazek']; ?>" width="100" height="100"></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['p_id']; ?>">Edit</button><br><form method="POST" action="produkty.php?id_product=<?php echo $row['p_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
                 <?php } 
                     if(isset($_POST['delete'])){
                         $id=$_GET['id_product'];
@@ -148,6 +171,13 @@ require_once "../connect.php";
       </div>
     </div>
     
+
+  <script src="docsupport/jquery-3.2.1.min.js" type="text/javascript"></script>
+  <script src="chosen.jquery.js" type="text/javascript"></script>
+  <script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+  <script src="docsupport/init.js" type="text/javascript" charset="utf-8"></script>
+
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <script>
     $('#exampleModal').on('show.bs.modal', function (event) {
