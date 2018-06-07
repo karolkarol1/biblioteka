@@ -107,7 +107,6 @@ require_once "../connect.php";
                             if(isset($_POST['changestatus'])){ 
                                 $id=$_GET['id_user'];
                                 $chstatus=$pdo->prepare("UPDATE b_uzytkownicy SET status=:s  WHERE u_id=:u_id");
-                                $chstatus->bindValue(':s',0);
                                 $chstatus->bindValue(':u_id',$_GET['id_user']);
                                 $chstatus->bindValue(':s',$_POST['status']);
                                 $chstatus->execute();

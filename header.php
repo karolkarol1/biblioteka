@@ -71,7 +71,7 @@
         <li class="plog"><a href="rezerwacje.php">Rezerwacje</a></li>
         <li class="plog"><a href="ustawienia.php?akcja=wyloguj">Wyloguj</a></li>  ';
         if (isset ($_SESSION['admin']))
-            echo '<li class="plog"><a href="admin/zamowienia.php">Panel admina</a></li>';
+            echo '<li class="plog"><a href="admin/index.php">Panel admina</a></li>';
         echo '    
         </ul>
        </div> ';

@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 if($_SESSION['admin']!=1){
 exit();
 }
@@ -38,10 +39,10 @@ require_once "../connect.php";
         </div>
         <div class="container">
             <form class="form-signin" id="addProduct" method="POST" action="ksiazki.php" ENCTYPE="multipart/form-data"><br>
-                <input type="text" name="nazwa" class="form-control" placeholder="Nazwa" required autofocus>
+                <input type="text" name="nazwa" class="form-control" placeholder="Tytuł" required autofocus>
                 <input type="text" name="opis" class="form-control" placeholder="Opis" required>
                 <div class="form-control">
-                <select data-placeholder="Kategorie" name="kat_id" class="chosen-select" tabindex="2" required>
+                <select data-placeholder="Kategoria" name="kat_id" class="chosen-select" tabindex="2" required>
                 <option value=""></option>
 
                     <?php
@@ -55,9 +56,24 @@ require_once "../connect.php";
                     ?>
                 </select>
                 </div>
+                <div class="form-control">
+                <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="2" required>
+                <option value=""></option>
+
+                    <?php
+                        $categorys=$pdo->query("SELECT w_id, nazwa_wydawnictwa from b_wydawnictwo");
+                
+                        foreach($categorys as $row){                 
+                    ?>
+	                   <option value="<?php echo $row['w_id']; ?>" ><?php echo $row['nazwa_wydawnictwa']; ?></option>
+                    
+                    <?php }   
+                    ?>
+                </select>
+                </div>
                 <br>
                 <div class="form-control">
-          <select data-placeholder="Autorzy" class="chosen-select" multiple tabindex="4">
+          <select data-placeholder="Autorzy" class="chosen-select" name="autorzy[]" multiple tabindex="4">
             <option value=""></option>
 
 
@@ -70,26 +86,56 @@ require_once "../connect.php";
                     
                     <?php }  ?>
 
-            <option value="United States">United States</option>
 
           </select>
         </div>
-                
+        <input type="number" name="ilosc" class="form-control" placeholder="Ilość" required>
+
                 <br><br>
                 <input type="file" name="userfile" required><br><br>
                 <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dodaj książkę</button>
             </form>
         </div>
         <?php 
+
+// print_r($_POST);
+
+
             if(isset($_POST['submit'])){
-                $addProduct=$pdo->prepare("INSERT INTO b_ksiazki VALUES(null,:nazwa,:opis,:kat_id,:obrazek)");
-                $addProduct->bindParam(':nazwa',$_POST['nazwa']);
-                $addProduct->bindParam(':opis',$_POST['opis']);
-                $addProduct->bindValue(':kat_id',$_POST['kat_id']);
-                $addProduct->bindParam(':obrazek',$_FILES['userfile']['name']);
-                $addProduct->execute();
+
+
+
+                $addbook=$pdo->prepare("INSERT INTO b_ksiazki VALUES(null,:nazwa,:opis,:kat_id,:obrazek,:wyd,:ilosc)");
+                $addbook->bindParam(':nazwa',$_POST['nazwa']);
+                $addbook->bindParam(':opis',$_POST['opis']);
+                $addbook->bindParam(':kat_id',$_POST['kat_id']);
+                $addbook->bindParam(':obrazek',$_FILES['userfile']['name']);
+                $addbook->bindParam(':wyd',$_POST['wyd_id']);
+                $addbook->bindParam(':ilosc',$_POST['ilosc']);
+
+                $addbook->execute();
+
+                // $addbook->debugDumpParams();
+
+
+                // print_r($addbook);
+
+                $id_ksiazki = $pdo->lastInsertId();
+
+
+                $autorzy=$_POST['autorzy'];
+
+                foreach($autorzy as $row){                 
+
+                    $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:aid,:kid)");
+                    $addauthorbook->bindParam(':aid',$row);
+                    $addauthorbook->bindParam(':kid',$id_ksiazki);
+                    $addauthorbook->execute();
+
+                }
+
                 
-                $uploaddir = "../img/produkty/";
+                $uploaddir = "../img/ksiazki/";
                 $uploadfile = $uploaddir . basename($_FILES["userfile"]["name"]);
                 
                 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
@@ -100,7 +146,7 @@ require_once "../connect.php";
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <meta http-equiv="refresh" content="1">
+                    <!-- <meta http-equiv="refresh" content="1"> -->
                 <?php 
                 } else {
                 echo "Upload failed";
@@ -120,24 +166,26 @@ require_once "../connect.php";
                   <th>Tytuł</th>
                   <th>Autorzy</th>
                   <th>Kategoria</th>
+                  <th>Wydawnictwo</th>
                   <th>Okładka</th>
                 </tr>
               </thead>
               <tfoot>
               <tr>
-              <th>ID</th>
+                  <th>ID</th>
                   <th>Tytuł</th>
                   <th>Autorzy</th>
                   <th>Kategoria</th>
+                  <th>Wydawnictwo</th>
                   <th>Okładka</th>
                 </tr>
               </tfoot>
               <tbody>
                 <?php
-                  $ksiazki=$pdo->query('SELECT * FROM b_ksiazki');
+                  $ksiazki=$pdo->query('SELECT k.k_id, k.tytul, k.obrazek, kat.nazwa, kat.nazwa, w.nazwa_wydawnictwa, GROUP_CONCAT(DISTINCT concat(nazwisko," ",imie)) autorzy FROM b_ksiazki k JOIN b_autorzyksiazka ak on (k.k_id = ak.k_id) JOIN b_autor a ON (ak.a_id=a.a_id) JOIN b_wydawnictwo w ON (k.wydawnictwo=w.w_id) JOIN b_kategorie kat ON(k.kat_id=kat.id) GROUP BY k.tytul');
                   foreach($ksiazki as $row){
                 ?>
-                  <tr><td><?php echo $row['k_id']; ?></td><td><?php echo $row['tytul']; ?></td><td><?php echo $row['kat_id']; ?></td><td><img src="../img/ksiazki/<?php echo $row['obrazek'];?>" alt="<?php echo $row['obrazek']; ?>" width="100" height="100"></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['p_id']; ?>">Edit</button><br><form method="POST" action="produkty.php?id_product=<?php echo $row['p_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
+                  <tr><td><?php echo $row['k_id']; ?></td><td><?php echo $row['tytul']; ?></td><td><?php echo $row['autorzy']; ?></td><td><?php echo $row['nazwa']; ?></td><td><?php echo $row['nazwa_wydawnictwa']; ?></td><td><img src="../img/ksiazki/<?php echo $row['obrazek'];?>" alt="<?php echo $row['obrazek']; ?>" width="100" height="100"></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['p_id']; ?>">Edit</button><br><form method="POST" action="produkty.php?id_product=<?php echo $row['p_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
                 <?php } 
                     if(isset($_POST['delete'])){
                         $id=$_GET['id_product'];
@@ -149,7 +197,7 @@ require_once "../connect.php";
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <meta http-equiv="refresh" content="1">
+                        <!-- <meta http-equiv="refresh" content="1"> -->
                 <?php } ?>
                   
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">

@@ -77,27 +77,89 @@ require_once "../connect.php";
                         <td><?php echo $row['tytul']; ?></td>
 
 <td>
-<td><?php if($row['status']!=0){ ?><form method="POST" action="rezerwacje.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Zdezaktywuj"><input type="hidden" name="status" value="-1"></form><?php }
-                          else{ ?><form method="POST" action="rezerwacje.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Aktywuj"><input type="hidden" name="status" value="0"></form><?php }
-                          ?><br>
+<td><?php if($row['status']==0){ ?><form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Wypożyczona"><input type="hidden" name="status" value="1"></form>
+                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="status" value="2"></form>
+                          <?php
+                        }
+                        ?>
+
+                        <?php if($row['status']==1){ ?><form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Zarezerwowana"><input type="hidden" name="status" value="0"></form>
+                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="status" value="2"></form>
+                          <?php
+                        }
+                        ?>
+
+                        <?php if($row['status']==2){ ?><form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Zarezerwowana"><input type="hidden" name="status" value="0"></form>
+                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Wypożyczona"><input type="hidden" name="status" value="1"></form>
+                          <?php
+                        }
+                        ?>
                           
+                          <br>
                           
-
-                          <?php if($row['status']==1){ ?><form method="POST" action="rezerwacje.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń bibliotekarza"><input type="hidden" name="status" value="0"></form><?php }
-                          else{ ?><form method="POST" action="rezerwacje.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Aktywuj bibliotekarza"><input type="hidden" name="status" value="1"></form><?php }
-                          ?><br>
-
-
-                          <?php if($row['status']==2){ ?><form method="POST" action="rezerwacje.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń admina"><input type="hidden" name="status" value="0"></form><?php }
-                          else{ ?><form method="POST" action="rezerwacje.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Dodaj admina"><input type="hidden" name="status" value="2"></form><?php }
-                          ?><br>
+    
                         
-                        
-                        <form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_u" value="Usuń"></form></td></tr>
+                        <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_rez" value="Usuń"></form></td></tr>
 </td>
 
                         </tr>
                         <?php } ?>
+
+
+
+
+
+
+
+                            <?php  
+                                if(isset($_POST['del_rez'])){ 
+                                    $id=$_GET['rez_id'];
+                                    $delete=$pdo->exec("DELETE FROM b_rezerwacje WHERE r_id=$id");
+                            ?>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Usunięto</strong> rezerwacje o ID: <?php echo $_GET['rez_id']; ?>.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <meta http-equiv="refresh" content="1">
+                            <?php }
+                            if(isset($_POST['changestatus'])){ 
+                                $id=$_GET['rez_id'];
+                                $chstatus=$pdo->prepare("UPDATE b_rezerwacje SET status=:s  WHERE r_id=:u_id");
+                                $chstatus->bindValue(':s',0);
+                                $chstatus->bindValue(':u_id',$_GET['rez_id']);
+                                $chstatus->bindValue(':s',$_POST['status']);
+                                $chstatus->execute();
+
+                                $s=$_POST['status'];
+
+                            
+                            ?>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Poprawnie</strong> wykonano operację dla rezerwacji o ID: <?php echo $_GET['rez_id']; ?>.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <meta http-equiv="refresh" content="2">
+                            <?php } ?>
+                          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            </div>
+                                            <div class="dash">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                              </div>
+
+
+
+
                     </tbody>
                 </table>
                 </div>
