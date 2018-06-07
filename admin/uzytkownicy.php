@@ -73,12 +73,28 @@ require_once "../connect.php";
                                 <td><?php echo $row['miasto']; ?></td>
                                 <td><?php echo $row['kodpocztowy']; ?></td>
                                 <td><?php echo $row['telefon']; ?></td>
-                                <td><?php if($row['status']==0) echo 'Klient'; elseif($row['status']==2) echo "Partner"; else echo 'Admin';?></td>
-                          <td><?php if($row['status']==0){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="add_a" value="Dodaj Admina"></form><?php }else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_a" value="Usuń Admina"></form><?php }?><br><?php if($row['status']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_p" value="Zabierz Partnera"></form><?php } else {?><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-partner="4" data-whatever="<?php echo $row['u_id']; ?>">Dodaj partnera</button><?php } ?><br><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_u" value="Usuń"></form></td></tr>
+                                <td><?php if($row['status']==-1) echo 'Nieaktywny'; elseif($row['status']==0) echo "Użytkownik"; elseif($row['status']==1) echo "Bibliotekarz"; else echo 'Admin';?></td>
+                          <td><?php if($row['status']!=-1){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Zdezaktywuj"><input type="hidden" name="status" value="-1"></form><?php }
+                          else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Aktywuj"><input type="hidden" name="status" value="0"></form><?php }
+                          ?><br>
+                          
+                          
+
+                          <?php if($row['status']==1){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń bibliotekarza"><input type="hidden" name="status" value="0"></form><?php }
+                          else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Aktywuj bibliotekarza"><input type="hidden" name="status" value="1"></form><?php }
+                          ?><br>
+
+
+                          <?php if($row['status']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń admina"><input type="hidden" name="status" value="0"></form><?php }
+                          else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Dodaj admina"><input type="hidden" name="status" value="2"></form><?php }
+                          ?><br>
+                        
+                        
+                        <form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="del_u" value="Usuń"></form></td></tr>
                             <?php } 
                                 if(isset($_POST['del_u'])){ 
                                     $id=$_GET['id_user'];
-                                    $delete=$pdo->exec("DELETE FROM s_uzytkownicy WHERE u_id=$id");
+                                    $delete=$pdo->exec("DELETE FROM b_uzytkownicy WHERE u_id=$id");
                             ?>
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>Usunięto</strong> użytkownika o ID: <?php echo $_GET['id_user']; ?>.
@@ -88,52 +104,26 @@ require_once "../connect.php";
                                 </div>
                                 <meta http-equiv="refresh" content="1">
                             <?php }
-                            if(isset($_POST['del_p'])){ 
+                            if(isset($_POST['changestatus'])){ 
                                 $id=$_GET['id_user'];
-                                $del_partner=$pdo->prepare("UPDATE s_uzytkownicy SET jestadminem=:jestadminem  WHERE u_id=:u_id");
-                                $del_partner->bindValue(':jestadminem',0);
-                                $del_partner->bindValue(':u_id',$_GET['id_user']);
-                                $del_partner->execute();
-                                $drop_partner=$pdo->exec("DELETE FROM s_partnerzy WHERE u_id=$id");
+                                $chstatus=$pdo->prepare("UPDATE b_uzytkownicy SET status=:s  WHERE u_id=:u_id");
+                                $chstatus->bindValue(':s',0);
+                                $chstatus->bindValue(':u_id',$_GET['id_user']);
+                                $chstatus->bindValue(':s',$_POST['status']);
+                                $chstatus->execute();
+
+                                $s=$_POST['status'];
+
+
                             ?>
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Odebrano</strong> partnera dla użytkownika o ID: <?php echo $_GET['id_user']; ?>.
+                                    <strong>Poprawnie</strong> wykonano operację dla użytkownika o ID: <?php echo $_GET['id_user']; ?>.
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <meta http-equiv="refresh" content="2">
-                            <?php }
-                            if(isset($_POST['del_a'])){ 
-                                $id=$_GET['id_user'];
-                                $del_admin=$pdo->prepare("UPDATE s_uzytkownicy SET jestadminem=:jestadminem  WHERE u_id=:u_id");
-                                $del_admin->bindValue(':jestadminem',0);
-                                $del_admin->bindValue(':u_id',$_GET['id_user']);
-                                $del_admin->execute();
-                            ?>
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Odebrano</strong> admina dla użytkownika o ID: <?php echo $_GET['id_user']; ?>.
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <meta http-equiv="refresh" content="2">
-                            <?php } 
-                              if(isset($_POST['add_a'])){ 
-                                $id=$_GET['id_user'];
-                                $add_admin=$pdo->prepare("UPDATE s_uzytkownicy SET jestadminem=:jestadminem  WHERE u_id=:u_id");
-                                $add_admin->bindValue(':jestadminem',1);
-                                $add_admin->bindValue(':u_id',$_GET['id_user']);
-                                $add_admin->execute();
-                            ?>
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Dodano</strong> admina dla użytkownika o ID: <?php echo $_GET['id_user']; ?>.
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <meta http-equiv="refresh" content="2">
-                            <?php }  ?>
+                            <?php } ?>
                           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

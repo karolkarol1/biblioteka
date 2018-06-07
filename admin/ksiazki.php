@@ -40,9 +40,9 @@ require_once "../connect.php";
             <form class="form-signin" id="addProduct" method="POST" action="ksiazki.php" ENCTYPE="multipart/form-data"><br>
                 <input type="text" name="nazwa" class="form-control" placeholder="Nazwa" required autofocus>
                 <input type="text" name="opis" class="form-control" placeholder="Opis" required>
-                <input type="text" name="cena" class="form-control" placeholder="Cena" required>
-                <select name="kat_id" class="form-control" required>
-                <option value="">Kategoria</option>
+                <div class="form-control">
+                <select data-placeholder="Kategorie" name="kat_id" class="chosen-select" tabindex="2" required>
+                <option value=""></option>
 
                     <?php
                         $categorys=$pdo->query("SELECT id, nazwa from b_kategorie");
@@ -54,6 +54,7 @@ require_once "../connect.php";
                     <?php }   
                     ?>
                 </select>
+                </div>
                 <br>
                 <div class="form-control">
           <select data-placeholder="Autorzy" class="chosen-select" multiple tabindex="4">
@@ -81,10 +82,9 @@ require_once "../connect.php";
         </div>
         <?php 
             if(isset($_POST['submit'])){
-                $addProduct=$pdo->prepare("INSERT INTO s_produkty VALUES(null,:nazwa,:opis,:cena,:kat_id,:obrazek)");
+                $addProduct=$pdo->prepare("INSERT INTO b_ksiazki VALUES(null,:nazwa,:opis,:kat_id,:obrazek)");
                 $addProduct->bindParam(':nazwa',$_POST['nazwa']);
                 $addProduct->bindParam(':opis',$_POST['opis']);
-                $addProduct->bindValue(':cena',$_POST['cena']);
                 $addProduct->bindValue(':kat_id',$_POST['kat_id']);
                 $addProduct->bindParam(':obrazek',$_FILES['userfile']['name']);
                 $addProduct->execute();

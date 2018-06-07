@@ -82,54 +82,31 @@
     }
     elseif($_GET['idd']==2){
         $id=$_GET['id'];
-        $category= $pdo->prepare("SELECT * FROM s_kategorie WHERE id=$id");
+        $category= $pdo->prepare("SELECT id, nazwa FROM b_kategorie WHERE id=$id");
         $category->execute();
         $cat=$category->fetchAll();
-        $kategorie = $pdo ->query("SELECT * FROM s_kategorie WHERE id_rodzica='".$cat[0][4]."'");
      ?>
      <form method="POST" action="editdata.php?idd=2&id=<?php echo $id;?>" role="form" ENCTYPE="multipart/form-data">
 	   <div class="modal-body">
             <div class="form-group">
                 <label for="name">Nazwa</label>
-                <input type="text" class="form-control" id="id" name="nazwa" value="<?php echo $cat[0][1]; ?>" />
-            </div>
-            <div class="form-group">
-                <label for="name">Zmień kolejność:</label>
-                <select class="form" name="kolejnosc">
-                <option selected hidden value="<?php echo $cat[0][3]; ?>"><?php echo $cat[0][3]; ?></option>
-                <?php
-                    foreach($kategorie as $row){                 
-                ?>
-                <option value="<?php echo $row['kolejnosc']; ?>" ><?php echo $row['kolejnosc']; ?></option>
-                <?php }   
-                ?>
-                </select>
+                <input type="text" class="form-control" id="id" name="nazwa" value="<?php echo $cat[0]['nazwa']; ?>" />
+                <input type="hidden" id="id" name="id" value="<?php echo $cat[0]['id']; ?>" />
+
             </div>
 		</div>
 		<div class="modal-footer">
-			<button type="submit" name="podkat_send" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
+			<button type="submit" name="kat_send" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>
     </form>
     <?php
-        if(isset($_POST['podkat_send'])){
-            $select=$pdo->prepare("SELECT kolejnosc FROM s_kategorie WHERE id='".$_GET['id']."' AND id_rodzica=0");
-            $select->execute();
-            $r_select=$select->fetchAll();
-
-            $selectt=$pdo->prepare("SELECT id FROM s_kategorie WHERE kolejnosc='".$_POST['kolejnosc']."' AND id_rodzica=0");
-            $selectt->execute();
-            $r_selectt=$selectt->fetchAll();
-            $changeKolejnosc=$pdo->prepare("UPDATE s_kategorie SET kolejnosc=:kolejnosc WHERE id=:id");
-            $changeKolejnosc->bindValue(':kolejnosc',$r_select[0]['kolejnosc']);
-            $changeKolejnosc->bindValue(':id',$r_selectt[0]['id']);
+        if(isset($_POST['kat_send'])){
+            $changeKolejnosc=$pdo->prepare("UPDATE b_kategorie SET nazwa=:nazwa WHERE id=:id");
+            $changeKolejnosc->bindValue(':nazwa',$_POST['nazwa']);
+            $changeKolejnosc->bindValue(':id',$_POST['id']);
             $changeKolejnosc->execute();
 
-            $updateKolejnosc=$pdo->prepare("UPDATE s_kategorie SET nazwa=:nazwa,kolejnosc=:kolejnosc WHERE id=:id");
-            $updateKolejnosc->bindParam(':nazwa',$_POST['nazwa']);
-            $updateKolejnosc->bindValue(':kolejnosc',$_POST['kolejnosc']);
-            $updateKolejnosc->bindValue(':id',$_GET['id']);
-            $updateKolejnosc->execute();
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
             $extra = 'kategorie.php';
