@@ -46,11 +46,11 @@ require_once "../connect.php";
                 <option value=""></option>
 
                     <?php
-                        $categorys=$pdo->query("SELECT id, imie, nazwisko from b_autor");
+                        $categorys=$pdo->query("SELECT id, nazwa from b_kategorie");
                 
                         foreach($categorys as $row){                 
                     ?>
-	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['imie']; ?><?php echo $row['nazwisko']; ?></option>
+	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwa']; ?></option>
                     
                     <?php }   
                     ?>
@@ -78,11 +78,11 @@ require_once "../connect.php";
 
 
                     <?php
-                        $autorzy=$pdo->query("SELECT a_id, nazwa, obrazek from s_kategorie");
+                        $autorzy=$pdo->query("SELECT id, nazwa from b_kategorie");
                 
-                        foreach($autorzy as $row){                 
+                        foreach($nazwa as $row){                 
                     ?>
-	                   <option value="<?php echo $row['s_id']; ?>" ><?php echo $row['nazwa'].' '.$row['obrazek']; ?></option>
+	                   <option value="<?php echo $row['id']; ?>" <?php echo $row['nazwa']; ?></option>
                     
                     <?php }  ?>
 
