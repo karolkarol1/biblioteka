@@ -2,7 +2,7 @@
 session_start();
 
 
-if($_SESSION['admin']!=1){
+if($_SESSION['status']<1){
 exit();
 }
 require_once "header.php";

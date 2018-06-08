@@ -7,7 +7,7 @@ require_once "header.php";
     
 
 
-            echo "<article><center><h1>Twoje zamówienie zostało opłacone</center></h1><center><br>Poinformujemy Ciebie, jeżeli zamówienie zostanie zrealizowane</center></article>";
+            echo "<article><center><h1>Naliczona kara została opłacona</center></h1></article>";
         
     
     

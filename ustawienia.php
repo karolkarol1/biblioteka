@@ -8,15 +8,6 @@ require_once "header.php";
 if (isset ($_POST['bt'])){
 
     
-    if (empty ($_POST['haslo'])){
-                         $sql = 'UPDATE b_uzytkownicy SET ulica=:ulica, miasto=:miasto, kodpocztowy=:kodpocztowy, telefon=:telefon where u_id=:id';
-
-       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-
-
-$sth->execute(array(':ulica' => $_POST['ulica'], ':miasto' => $_POST['miasto'], ':kodpocztowy' => $_POST['kod'], ':telefon' => $_POST['telefon'], ':id' => $_SESSION['id']));
-    }
-    else {
            if ((empty ($_POST['haslonowe']) ) || (empty ($_POST['haslonowe2'])) ){ 
         echo '<div class="error">Nowe hasła są puste</div>';
     }
@@ -29,18 +20,18 @@ $sth->execute(array(':ulica' => $_POST['ulica'], ':miasto' => $_POST['miasto'], 
            
         $nowypass = hash('sha256', $_POST['haslonowe']);
 
-                         $sql = 'UPDATE b_uzytkownicy SET ulica=:ulica, miasto=:miasto, kodpocztowy=:kodpocztowy, telefon=:telefon, haslo=:nowy where u_id=:id AND haslo=:haslo';
+                         $sql = 'UPDATE b_uzytkownicy SET haslo=:nowy where u_id=:id AND haslo=:haslo';
 
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
 
-$sth->execute(array(':ulica' => $_POST['ulica'], ':miasto' => $_POST['miasto'], ':kodpocztowy' => $_POST['kod'], ':telefon' => $_POST['telefon'], ':id' => $_SESSION['id'],  ':nowy' => $nowypass,  ':haslo' => $pass));
+$sth->execute(array(':id' => $_SESSION['id'],  ':nowy' => $nowypass,  ':haslo' => $pass));
            
 
            
        } 
 
-}
+
 
               if ( $sth->rowCount()==0){
                     echo '<div class="error">Wprowadzone zmiany nie zostały zaktualizowane</div><br class="clearboth">';
@@ -83,17 +74,17 @@ $ustawienia = $sth->fetchAll();
 
           
            <label>Ulica:<br>
-               <input name = "ulica" value="<?php echo $ustawienia[0][0] ?>" type = "text" size = "25" required/></label>
+               <input name = "ulica" value="<?php echo $ustawienia[0][0] ?>" type = "text" size = "25" disabled/></label>
           
             <label>Miasto:<br>
-               <input name = "miasto" value="<?php echo $ustawienia[0][1] ?>" type = "text" size = "25" required/></label>
+               <input name = "miasto" value="<?php echo $ustawienia[0][1] ?>" type = "text" size = "25" disabled/></label>
             
           <label>Kod pocztowy:<br>
-               <input name = "kod" value="<?php echo $ustawienia[0][2] ?>" type = "text" size = "25" required/></label>
+               <input name = "kod" value="<?php echo $ustawienia[0][2] ?>" type = "text" size = "25" disabled/></label>
                
           
            <label>Telefon:<br>
-               <input name = "telefon" value="<?php echo $ustawienia[0][3] ?>" type = "text" size = "25" required/></label>
+               <input name = "telefon" value="<?php echo $ustawienia[0][3] ?>" type = "text" size = "25" disabled/></label>
 
            <label>Stare hasło:<br><input name = "haslo" type = "password" size = "25" /></label>
  <label>Nowe hasło:<br><input name = "haslonowe" type = "password" size = "25" /></label>

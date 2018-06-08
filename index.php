@@ -71,9 +71,8 @@ require_once "header.php";
         if(isset($_SESSION['status']))
 
 
-        echo "<article>";
+        echo "<article><h1>$title</h1>";
         
-        echo "<h1>$title</h1>";
 
 
     

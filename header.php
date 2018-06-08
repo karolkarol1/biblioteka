@@ -69,8 +69,11 @@
     <ul class="plog">
         <li class="plog"><a href="ustawienia.php">Ustawienia</a></li>
         <li class="plog"><a href="rezerwacje.php">Rezerwacje</a></li>
+        <li class="plog"><a href="kary.php">Naliczone kary</a></li>
+
         <li class="plog"><a href="ustawienia.php?akcja=wyloguj">Wyloguj</a></li>  ';
-        if (isset ($_SESSION['admin']))
+        if (isset ($_SESSION['status']))
+        if($_SESSION['status']>0)
             echo '<li class="plog"><a href="admin/index.php">Panel admina</a></li>';
         echo '    
         </ul>
