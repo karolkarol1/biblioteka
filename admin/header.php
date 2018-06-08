@@ -143,6 +143,14 @@ elseif($_SESSION['admin']==2){
             <span class="nav-link-text">Użytkownicy</span>
             </a>
             </li>
+			</a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Autorzy">
+            <a class="nav-link" href="autorzy.php">
+            <i class="fa fa-fw fa-users"></i>
+            <span class="nav-link-text">Autorzy</span>
+            </a>
+            </li>
           </ul>
           <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
