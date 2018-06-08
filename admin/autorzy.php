@@ -105,7 +105,7 @@ require_once "../connect.php";
 
 
 
-                $addbook=$pdo->prepare("INSERT INTO b_ksiazki VALUES(null,:imie,:nazwisko)");
+                $addbook=$pdo->prepare("INSERT INTO b_autor VALUES(null,:imie,:nazwisko)");
                 $addbook->bindParam(':nazwa',$_POST['imie']);
                 $addbook->bindParam(':opis',$_POST['nazwisko']);
             
