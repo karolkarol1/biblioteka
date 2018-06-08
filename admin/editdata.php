@@ -176,6 +176,8 @@ $wpisani->execute();
 $wpis=$wpisani->fetchAll();
 
 
+
+
                         $autorzy=$pdo->query("SELECT a_id, imie, nazwisko from b_autor");
                        
                        
@@ -183,7 +185,7 @@ $wpis=$wpisani->fetchAll();
                         foreach($autorzy as $row){  
                             
 
-                            $flaga=false;
+                            $flaga = false;
 
 
                             foreach($wpis as $roww){
@@ -192,7 +194,7 @@ $wpis=$wpisani->fetchAll();
                                     // echo 'test';
                             echo '<option value="'.$row['a_id'].'" selected>'.$row['imie'].' '.$row['nazwisko'].'</option>';
                                 }}
-                            if($flaga=="false"){
+                            if(!$flaga){
                                 echo '<option value="'.$row['a_id'].'">'.$row['imie'].' '.$row['nazwisko'].'</option>';
                                 }}?>
           </select><br>
@@ -200,11 +202,11 @@ $wpis=$wpisani->fetchAll();
 
                     <label for="ilosc">Ilość</label>
         <input type="number" name="ilosc" class="form-control" value="<?php echo $cat[0]['ilosc'];?>" placeholder="Ilość" required>
-
+<input type="hidden" name="obrazek" value="<?php echo $cat[0]['obrazek'];?>">
                 <br><br>
-                <label for="name">Obraz</label>
+                <label for="name">Obraz</label><br>
 
-<img src="../img/ksiazki/<?php echo $cat[0]['obrazek']; ?>">
+<img src="../img/ksiazki/<?php echo $cat[0]['obrazek']; ?>" height="100" width="100">
 
                 <input type="file" name="userfile"><br><br>
 
@@ -230,17 +232,42 @@ $wpis=$wpisani->fetchAll();
 
         if(isset($_POST['ksiazka_edit'])){
 
+            if(empty($_FILES['userfile']['name'])){
+$obr=$_POST['obrazek'];
+}
+            else{
+                $obr=$_FILES['userfile']['name'];
+            }
 
-            $changeKolejnosc=$pdo->prepare("UPDATE b_ksiazka SET tytul=:nazwa, opis=:opis,kat_id=:kat_id,obrazek=:obrazek,wydawnictwo=:wydawnictwo,ilosc=:ilosc WHERE id=:id");
+            $changeKolejnosc=$pdo->prepare("UPDATE b_ksiazki SET tytul=:nazwa, opis=:opis,kat_id=:kat_id,obrazek=:obrazek,wydawnictwo=:wydawnictwo,ilosc=:ilosc WHERE k_id=:id");
             $changeKolejnosc->bindValue(':nazwa',$_POST['nazwa']);
             $changeKolejnosc->bindValue(':opis',$_POST['opis']);
             $changeKolejnosc->bindValue(':kat_id',$_POST['kat_id']);
-            $changeKolejnosc->bindValue(':obrazek',$_FILES['userfile']['name']);
+            $changeKolejnosc->bindValue(':obrazek',$obr);
             $changeKolejnosc->bindValue(':wydawnictwo',$_POST['wyd_id']);
             $changeKolejnosc->bindValue(':ilosc',$_POST['ilosc']);
             $changeKolejnosc->bindValue(':id',$id);
 
             $changeKolejnosc->execute();
+
+                // $changeKolejnosc->debugDumpParams();
+
+                $autorzy=$_POST['autorzy'];
+
+
+                        $autorzy=$pdo->query("DELETE from b_autorzyksiazka where k_id=$id");
+
+
+
+                foreach($autorzy as $row){                 
+
+                    $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:aid,:kid)");
+                    $addauthorbook->bindParam(':aid',$row);
+                    $addauthorbook->bindParam(':kid',$id);
+                    $addauthorbook->execute();
+
+                }
+
 
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
