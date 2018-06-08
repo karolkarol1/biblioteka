@@ -72,23 +72,7 @@ require_once "../connect.php";
                 </select>
                 </div>
                 <br>
-                <div class="form-control">
-          <select data-placeholder="Kategoria" class="chosen-select" name="kategoria[]" multiple tabindex="4">
-            <option value=""></option>
-
-
-                    <?php
-                        $autorzy=$pdo->query("SELECT id, nazwa from b_kategorie");
-                
-                        foreach($nazwa as $row){                 
-                    ?>
-	                   <option value="<?php echo $row['id']; ?>" <?php echo $row['nazwa']; ?></option>
-                    
-                    <?php }  ?>
-
-
-          </select>
-        </div>
+            
        
 
                 <br><br>
