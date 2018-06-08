@@ -93,22 +93,10 @@ $zalogowany = $sth->fetchAll();
         
         $_SESSION['login'] = $zalogowany[0]['login'];
         $_SESSION['id'] = $zalogowany[0]['u_id'];
-        
-        if ($zalogowany[0]['status']==1){
-            $_SESSION['admin'] = 1;
-            $host  = $_SERVER['HTTP_HOST'];
-            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-            $extra = 'index.php';
-            header("Location: http://$host$uri/$extra");
-        }
-        elseif($zalogowany[0]['status']==2){
-            $_SESSION['admin'] = 2;
-            $host  = $_SERVER['HTTP_HOST'];
-            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-            $extra = 'index.php';
-            header("Location: http://$host$uri/$extra");
-        }
-        else{
+        $_SESSION['status'] = $zalogowany[0]['status'];
+
+        setcookie("status", $_SESSION['status']);
+
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
             $extra = 'index.php';
@@ -116,7 +104,7 @@ $zalogowany = $sth->fetchAll();
         }
     }
     
-}
+
 
 
 

@@ -185,16 +185,16 @@ $wpis=$wpisani->fetchAll();
                         foreach($autorzy as $row){  
                             
 
-                            $flaga = false;
+                            $x = false;
 
 
                             foreach($wpis as $roww){
                                 if($roww['a_id']==$row['a_id']){
-                                    $flaga=true;
-                                    // echo 'test';
-                            echo '<option value="'.$row['a_id'].'" selected>'.$row['imie'].' '.$row['nazwisko'].'</option>';
-                                }}
-                            if(!$flaga){
+                                    $x=true;
+                                    echo '<option value="'.$row['a_id'].'" selected>'.$row['imie'].' '.$row['nazwisko'].'</option>';
+                                }
+                                }
+                            if($x==false){
                                 echo '<option value="'.$row['a_id'].'">'.$row['imie'].' '.$row['nazwisko'].'</option>';
                                 }}?>
           </select><br>

@@ -41,13 +41,13 @@
         ?>
     </title>
     <link rel="stylesheet" href="main.css">
-    <script type="text/javascript" src="odlicz.js"></script>
+    <!-- <script type="text/javascript" src="odlicz.js"></script> -->
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <link rel=icon href="img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon">
       
   </head>
-  <body onload="odlicz()">
+  <body>
       <header>
         <div id="logo"><a href="index.php"><img src="img/header.png" alt="logo"/></a></div>
         <div id="wyszukaj"><form method="post" action="szukaj.php"><input class="szukaj" name="tekst" type="search" placeholder="Wpisz szukaną frazę...">
@@ -104,3 +104,21 @@
         <?php } ?>
         </ul>
     </aside>
+    <script type="text/javascript">
+    function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
+$(document).ready(function(){
+
+if(getCookie('status')==-1){
+    $( "article" ).prepend( "<div class='alert'>Posiadasz nieaktywne konto. Przyjdź do biblioteki i potwierdź dane.</div>" );
+
+
+}
+
+});
+
+</script>

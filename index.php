@@ -66,7 +66,14 @@ require_once "header.php";
         else
         $sth->execute(array(':id' => $id));
         $ksiazka = $sth->fetchAll();
-        echo "<article><h1>$title</h1>";
+
+
+        if(isset($_SESSION['status']))
+
+
+        echo "<article>";
+        
+        echo "<h1>$title</h1>";
 
 
     
