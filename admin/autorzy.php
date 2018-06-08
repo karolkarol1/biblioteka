@@ -73,16 +73,16 @@ require_once "../connect.php";
                 </div>
                 <br>
                 <div class="form-control">
-          <select data-placeholder="Autorzy" class="chosen-select" name="autorzy[]" multiple tabindex="4">
+          <select data-placeholder="Kategoria" class="chosen-select" name="kategoria[]" multiple tabindex="4">
             <option value=""></option>
 
 
                     <?php
-                        $autorzy=$pdo->query("SELECT a_id, imie, nazwisko from b_autor");
+                        $autorzy=$pdo->query("SELECT a_id, nazwa, obrazek from s_kategorie");
                 
                         foreach($autorzy as $row){                 
                     ?>
-	                   <option value="<?php echo $row['a_id']; ?>" ><?php echo $row['imie'].' '.$row['nazwisko']; ?></option>
+	                   <option value="<?php echo $row['s_id']; ?>" ><?php echo $row['nazwa'].' '.$row['obrazek']; ?></option>
                     
                     <?php }  ?>
 
