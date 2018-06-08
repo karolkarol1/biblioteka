@@ -46,11 +46,11 @@ require_once "../connect.php";
                 <option value=""></option>
 
                     <?php
-                        $categorys=$pdo->query("SELECT id, imie, nazwisko from b_autor");
+                        $categorys=$pdo->query("SELECT id, nazwa from b_kategorie");
                 
                         foreach($categorys as $row){                 
                     ?>
-	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['imie']; ?><?php echo $row['nazwisko']; ?></option>
+	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwa']; ?></option>
                     
                     <?php }   
                     ?>
@@ -72,23 +72,7 @@ require_once "../connect.php";
                 </select>
                 </div>
                 <br>
-                <div class="form-control">
-          <select data-placeholder="Autorzy" class="chosen-select" name="autorzy[]" multiple tabindex="4">
-            <option value=""></option>
-
-
-                    <?php
-                        $autorzy=$pdo->query("SELECT a_id, imie, nazwisko from b_autor");
-                
-                        foreach($autorzy as $row){                 
-                    ?>
-	                   <option value="<?php echo $row['a_id']; ?>" ><?php echo $row['imie'].' '.$row['nazwisko']; ?></option>
-                    
-                    <?php }  ?>
-
-
-          </select>
-        </div>
+            
        
 
                 <br><br>
@@ -105,7 +89,7 @@ require_once "../connect.php";
 
 
 
-                $addbook=$pdo->prepare("INSERT INTO b_ksiazki VALUES(null,:imie,:nazwisko)");
+                $addbook=$pdo->prepare("INSERT INTO b_autor VALUES(null,:imie,:nazwisko)");
                 $addbook->bindParam(':nazwa',$_POST['imie']);
                 $addbook->bindParam(':opis',$_POST['nazwisko']);
             

@@ -130,7 +130,8 @@ require_once "../connect.php";
 
                     $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:aid,:kid)");
                     $addauthorbook->bindParam(':aid',$row);
-                    $addauthorbook->bindParam(':kid',$id_ksiazki);
+                    $addauthorbook->bindParam(':nazwa',$_POST['nazwa']);
+					$addauthorbook->bindParam(':obrazek',$_FILES['userfile']['name']);
                     $addauthorbook->execute();
 
                 }
@@ -142,7 +143,7 @@ require_once "../connect.php";
                 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
                 ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Dodano</strong> poprawnie produkt.
+                        <strong>Dodano</strong> poprawnie autora.
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
