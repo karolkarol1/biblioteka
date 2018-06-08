@@ -55,6 +55,7 @@ require_once "../connect.php";
                     <?php }   
                     ?>
                 </select>
+                <br>
                 </div>
                 <div class="form-control">
                 <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="2" required>
@@ -87,7 +88,7 @@ require_once "../connect.php";
                     <?php }  ?>
 
 
-          </select>
+          </select><br>
         </div>
         <input type="number" name="ilosc" class="form-control" placeholder="Ilość" required>
 
@@ -185,7 +186,7 @@ require_once "../connect.php";
                   $ksiazki=$pdo->query('SELECT k.k_id, k.tytul, k.obrazek, kat.nazwa, kat.nazwa, w.nazwa_wydawnictwa, GROUP_CONCAT(DISTINCT concat(nazwisko," ",imie)) autorzy FROM b_ksiazki k JOIN b_autorzyksiazka ak on (k.k_id = ak.k_id) JOIN b_autor a ON (ak.a_id=a.a_id) JOIN b_wydawnictwo w ON (k.wydawnictwo=w.w_id) JOIN b_kategorie kat ON(k.kat_id=kat.id) GROUP BY k.tytul');
                   foreach($ksiazki as $row){
                 ?>
-                  <tr><td><?php echo $row['k_id']; ?></td><td><?php echo $row['tytul']; ?></td><td><?php echo $row['autorzy']; ?></td><td><?php echo $row['nazwa']; ?></td><td><?php echo $row['nazwa_wydawnictwa']; ?></td><td><img src="../img/ksiazki/<?php echo $row['obrazek'];?>" alt="<?php echo $row['obrazek']; ?>" width="100" height="100"></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['p_id']; ?>">Edit</button><br><form method="POST" action="produkty.php?id_product=<?php echo $row['p_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
+                  <tr><td><?php echo $row['k_id']; ?></td><td><?php echo $row['tytul']; ?></td><td><?php echo $row['autorzy']; ?></td><td><?php echo $row['nazwa']; ?></td><td><?php echo $row['nazwa_wydawnictwa']; ?></td><td><img src="../img/ksiazki/<?php echo $row['obrazek'];?>" alt="<?php echo $row['obrazek']; ?>" width="100" height="100"></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['k_id']; ?>">Edit</button><br><form method="POST" action="ksiazki.php?k_id=<?php echo $row['k_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
                 <?php } 
                     if(isset($_POST['delete'])){
                         $id=$_GET['id_product'];
@@ -230,9 +231,9 @@ require_once "../connect.php";
       <script>
     $('#exampleModal').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var recipient = button.data('whatever')// Extract info from data-* attributes
           var modal = $(this);
-          var dataString = 'id=' + recipient;
+          var dataString = 'idd=3&id=' + recipient;
             $.ajax({
                 type: "GET",
                 url: "editdata.php",

@@ -39,7 +39,7 @@ require_once "connect.php";
    }
 
 
-$sql = 'INSERT INTO b_uzytkownicy VALUES (null, :login, :haslo, :imie, :nazwisko, :email, :ulica, :miasto, :kodpocztowy, :telefon, 0)';
+$sql = 'INSERT INTO b_uzytkownicy VALUES (null, :login, :haslo, :imie, :nazwisko, :email, :ulica, :miasto, :kodpocztowy, :telefon, -1)';
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
 

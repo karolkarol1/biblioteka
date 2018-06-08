@@ -39,6 +39,8 @@ require_once "../connect.php";
                             <th>Data_początek</th>
                             <th>Data_koniec</th>
                             <th>Tytuł</th>
+                            <th>Operacje</th>
+
                         </tr>
                     </thead>
                     <tfoot>
@@ -49,6 +51,7 @@ require_once "../connect.php";
                             <th>Data_początek</th>
                             <th>Data_koniec</th>
                             <th>Tytuł</th>
+                            <th>Operacje</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -76,7 +79,6 @@ require_once "../connect.php";
                         <td><?php echo $row['data_koniec']; ?></td>
                         <td><?php echo $row['tytul']; ?></td>
 
-<td>
 <td><?php if($row['status']==0){ ?><form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Wypożyczona"><input type="hidden" name="status" value="1"></form>
                           <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="status" value="2"></form>
                           <?php

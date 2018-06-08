@@ -68,16 +68,6 @@
         $uploaddir = "../img/produkty/";
         $uploadfile = $uploaddir . basename($_FILES["userfile"]["name"]);
 
-        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-            echo "Produkt został poprawnie dodany";
-             $host  = $_SERVER['HTTP_HOST'];
-             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-             $extra = 'kategorie.php';
-            header("Location: http://$host$uri/$extra");
-             exit;
-       } else {
-        echo "Upload failed";
-        }
         }
     }
     elseif($_GET['idd']==2){
@@ -114,88 +104,159 @@
             exit;   
         }
     }
-    elseif($_GET['id_punktu']==3){
+
+    elseif($_GET['idd']==3){
         $id=$_GET['id'];
-        $punkty= $pdo->prepare("SELECT * FROM s_punkty WHERE id_punktu=$id");
-        $punkty->execute();
-        $r_punkty=$punkty->fetchAll();
+        $category= $pdo->prepare("SELECT id, k.tytul, k.ilosc, kat.nazwa, k.opis, k.obrazek, w.nazwa_wydawnictwa FROM b_ksiazki k JOIN b_wydawnictwo w ON(k.wydawnictwo=w.w_id) JOIN b_kategorie kat ON (k.kat_id=kat.id) where k.k_id=$id");
+        $category->execute();
+        $cat=$category->fetchAll();
      ?>
-     <form method="POST" action="editdata.php?id_punktu=3&id=<?php echo $id;?>" role="form">
+     <form method="POST" action="editdata.php?idd=3&id=<?php echo $id;?>" role="form" ENCTYPE="multipart/form-data">
 	   <div class="modal-body">
             <div class="form-group">
-                <label for="name">Nazwa</label>
-                <input type="text" class="form-control" id="id" name="nazwa" value="<?php echo $r_punkty[0][1]; ?>" />
-            </div>
-		</div>
-		<div class="modal-footer">
-			<button type="submit" name="nowy_punkt" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
-    </form>
-    <?php
-        if(isset($_POST['nowy_punkt'])){
-            $id=$_GET['id'];
-            $add_admin=$pdo->prepare("UPDATE s_punkty SET adres=:adres WHERE id_punktu=:id_punktu");
-            $add_admin->bindParam(':adres',$_POST['nazwa']);
-            $add_admin->bindValue(':id_punktu',$id);
-            $add_admin->execute();
-            $host  = $_SERVER['HTTP_HOST'];
-            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-            $extra = 'partnerzy.php';
-            header("Location: http://$host$uri/$extra");
-            exit;   
-        }
-    }
-    elseif($_GET['id_partnera']==4){
-        $id=$_GET['id'];
-        $punkty= $pdo->query("SELECT * FROM s_punkty");
-     ?>
-     <form method="POST" action="editdata.php?id_partnera=4&id=<?php echo $id;?>" role="form">
-	   <div class="modal-body">
-            <div class="form-group">
-                <label for="name">Lista adresow:</label>
-                <select class="form" name="adresy">
-                <?php
-                    foreach($punkty as $row){                 
-                ?>
-                <option value="<?php echo $row['id_punktu']; ?>" ><?php echo $row['adres']; ?></option>
-                <?php }   
-                ?>
-                </select>
-            </div>
-		</div>
-		<div class="modal-footer">
-			<button type="submit" name="nowy_partner" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dodaj partnera</button>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
-    </form>
-    <?php
-        if(isset($_POST['nowy_partner'])){
-            $id=$_GET['id'];
-            $addPartner=$pdo->prepare("INSERT INTO s_partnerzy VALUES(:u_id,:punkt_id)");
-            $addPartner->bindValue(':u_id',$id);
-            $addPartner->bindParam(':punkt_id',$_POST['adresy']);
-            $addPartner->execute();
-            
-            $updateStatus=$pdo->prepare("UPDATE s_uzytkownicy SET jestadminem=:jestadminem WHERE u_id=:u_id");
-            $updateStatus->bindValue(':jestadminem',2);
-            $updateStatus->bindValue(':u_id',$id);
-            $updateStatus->execute();
+                <input type="hidden" id="id" name="id" value="<?php echo $cat[0]['id']; ?>" />
+
+
+            <label for="name">Nazwa</label>
+
+                <input type="text" name="nazwa" class="form-control" placeholder="Tytuł" value="<?php echo $cat[0]['tytul']; ?>" required autofocus>
+                <label for="opis">Opis</label>
+
+                <textarea name="opis" class="form-control"><?php echo $cat[0]['opis']; ?></textarea>
+                <label for="kat_id">Kategoria</label>
+                <div class="form-control">
+                <select data-placeholder="Kategoria" name="kat_id" class="chosen-select" tabindex="2" required>
                 
+
+                
+                <option value=""></option>
+
+                    <?php
+                        $categorys=$pdo->query("SELECT id, nazwa from b_kategorie");
+                
+                        foreach($categorys as $row){  
+                            if($cat[0]['nazwa']==$row['nazwa']){
+                                echo '<option value="'.$row['id'].'" selected>'.$row['nazwa'].'</option>';
+                            }  
+                            else{
+                            echo '<option value="'.$row['id'].'" >'.$row['nazwa'].'</option>';
+                            }}     
+                    ?>
+                </select>
+                <br>
+                </div>
+                <label for="wyd_id">Wydawnictwo</label>
+                <div class="form-control">
+                <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="2" required>
+                <option value=""></option>
+
+                    <?php
+                        $wyd=$pdo->query("SELECT w_id, nazwa_wydawnictwa from b_wydawnictwo");
+                      foreach($wyd as $row){  
+                            if($cat[0]['nazwa_wydawnictwa']==$row['nazwa_wydawnictwa']){
+                                echo '<option value="'.$row['w_id'].'" selected>'.$row['nazwa_wydawnictwa'].'</option>';
+                            }  
+                            else{
+                            echo '<option value="'.$row['w_id'].'" >'.$row['nazwa_wydawnictwa'].'</option>';
+                            }}  
+
+                    ?>
+                </select>
+                </div>
+                <br>
+                <label for="autorzy[]">Autorzy</label>
+                <div class="form-control">
+          <select data-placeholder="Autorzy" class="chosen-select" name="autorzy[]" multiple tabindex="4">
+
+
+                    <?php
+
+$wpisani=$pdo->prepare("SELECT a_id from b_autorzyksiazka where k_id=$id");
+$wpisani->execute();
+$wpis=$wpisani->fetchAll();
+
+
+                        $autorzy=$pdo->query("SELECT a_id, imie, nazwisko from b_autor");
+                       
+                       
+
+                        foreach($autorzy as $row){  
+                            
+
+                            $flaga=false;
+
+
+                            foreach($wpis as $roww){
+                                if($roww['a_id']==$row['a_id']){
+                                    $flaga=true;
+                                    // echo 'test';
+                            echo '<option value="'.$row['a_id'].'" selected>'.$row['imie'].' '.$row['nazwisko'].'</option>';
+                                }}
+                            if($flaga=="false"){
+                                echo '<option value="'.$row['a_id'].'">'.$row['imie'].' '.$row['nazwisko'].'</option>';
+                                }}?>
+          </select><br>
+        </div>
+
+                    <label for="ilosc">Ilość</label>
+        <input type="number" name="ilosc" class="form-control" value="<?php echo $cat[0]['ilosc'];?>" placeholder="Ilość" required>
+
+                <br><br>
+                <label for="name">Obraz</label>
+
+<img src="../img/ksiazki/<?php echo $cat[0]['obrazek']; ?>">
+
+                <input type="file" name="userfile"><br><br>
+
+
+
+
+
+
+
+
+
+
+            </div>
+		</div>
+		<div class="modal-footer">
+			<button type="submit" name="ksiazka_edit" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+		</div>
+    </form>
+    <?php
+
+
+
+        if(isset($_POST['ksiazka_edit'])){
+
+
+            $changeKolejnosc=$pdo->prepare("UPDATE b_ksiazka SET tytul=:nazwa, opis=:opis,kat_id=:kat_id,obrazek=:obrazek,wydawnictwo=:wydawnictwo,ilosc=:ilosc WHERE id=:id");
+            $changeKolejnosc->bindValue(':nazwa',$_POST['nazwa']);
+            $changeKolejnosc->bindValue(':opis',$_POST['opis']);
+            $changeKolejnosc->bindValue(':kat_id',$_POST['kat_id']);
+            $changeKolejnosc->bindValue(':obrazek',$_FILES['userfile']['name']);
+            $changeKolejnosc->bindValue(':wydawnictwo',$_POST['wyd_id']);
+            $changeKolejnosc->bindValue(':ilosc',$_POST['ilosc']);
+            $changeKolejnosc->bindValue(':id',$id);
+
+            $changeKolejnosc->execute();
+
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-            $extra = 'uzytkownicy.php';
+            $extra = 'ksiazki.php';
             header("Location: http://$host$uri/$extra");
             exit;   
         }
     }
+
     else{
     $id = $_GET['id'];
-    $products = $pdo->prepare("SELECT * FROM s_produkty WHERE p_id=$id");
-    $products->execute();
-    $result=$products->fetchAll();
-    $categories=$pdo->query("SELECT A.id, B.nazwa AS nazwarodzica, A.nazwa AS nazwa FROM s_kategorie A, s_kategorie B WHERE A.id_rodzica = B.id  ORDER BY nazwarodzica");
-    $categoriess=$pdo->query("SELECT A.id, B.nazwa AS nazwarodzica, A.nazwa AS nazwa FROM s_kategorie A, s_kategorie B WHERE A.id_rodzica = B.id AND A.id='".$result[0][4]."' ORDER BY nazwarodzica");
+    $ksiazki = $pdo->prepare("SELECT * FROM b_ksiazki WHERE k_id=$id");
+    $ksiazki->execute();
+    $result=$ksiazki->fetchAll();
+
+    print_r($result);
     
     ?>
 
@@ -258,11 +319,16 @@
              $host  = $_SERVER['HTTP_HOST'];
              $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
              $extra = 'produkty.php';
-            header("Location: http://$host$uri/$extra");
+            // header("Location: http://$host$uri/$extra");
              exit;
        } else {
         echo "Upload failed";
         }
     }
 }
-?>    
+?> 
+
+  <script src="docsupport/jquery-3.2.1.min.js" type="text/javascript"></script>
+  <script src="chosen.jquery.js" type="text/javascript"></script>
+  <script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+  <script src="docsupport/init.js" type="text/javascript" charset="utf-8"></script>   
