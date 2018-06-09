@@ -183,6 +183,7 @@ elseif($_GET['idd']==7){
     }
 
     elseif($_GET['idd']==3){
+        if(!isset($_POST['ksiazka_edit'])){
         $id=$_GET['id'];
         $category= $pdo->prepare("SELECT id, k.tytul, k.ilosc, kat.nazwa, k.opis, k.obrazek, w.nazwa_wydawnictwa FROM b_ksiazki k JOIN b_wydawnictwo w ON(k.wydawnictwo=w.w_id) JOIN b_kategorie kat ON (k.kat_id=kat.id) where k.k_id=$id");
         $category->execute();
@@ -224,7 +225,7 @@ elseif($_GET['idd']==7){
                 </div>
                 <label for="wyd_id">Wydawnictwo</label>
                 <div class="form-control">
-                <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="2" required>
+                <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="3" required>
                 <option value=""></option>
 
                     <?php
@@ -269,6 +270,7 @@ $wpis=$wpisani->fetchAll();
                                 if($roww['a_id']==$row['a_id']){
                                     $x=true;
                                     echo '<option value="'.$row['a_id'].'" selected>'.$row['imie'].' '.$row['nazwisko'].'</option>';
+                                    break;
                                 }
                                 }
                             if($x==false){
@@ -306,8 +308,11 @@ $wpis=$wpisani->fetchAll();
     <?php
 
 
+                            }
+        else{
 
-        if(isset($_POST['ksiazka_edit'])){
+
+$id=$_GET['id'];
 
             if(empty($_FILES['userfile']['name'])){
 $obr=$_POST['obrazek'];
@@ -332,9 +337,10 @@ $obr=$_POST['obrazek'];
                 $autorzy=$_POST['autorzy'];
 
 
-                        $autorzy=$pdo->query("DELETE from b_autorzyksiazka where k_id=$id");
+                        $pdo->query("DELETE from b_autorzyksiazka where k_id=$id");
 
 
+                        print_r($autorzy);
 
                 foreach($autorzy as $row){                 
 
