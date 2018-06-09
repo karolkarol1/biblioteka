@@ -477,3 +477,12 @@ padding-left:100px;
     max-height: 250px;
     max-width: 250px;
 }
+
+.improduktksiazka{
+    float:left;
+    margin-right: 10px;
+}
+
+.prawo{
+    text-align: right;
+}

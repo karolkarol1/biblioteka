@@ -55,12 +55,12 @@ $produkt = $sth->fetchAll();
     
     
 
-<img class="improdukt" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"<span><br><br><?php echo $produkt[0]['opis'];?></span>
+<div class="obrazekksiazkaa"><img class="improduktksiazka" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"></div><div id="produktopis">
+<span><h4>Opis:</h4><?php echo $produkt[0]['opis'];?></span>
    
-    <div id="produktopis">
       <br>
-      <h2>Autorzy:</h2>
-      <h3>
+      <h4>Autorzy:</h4>
+      <p>
         <?php
 
         $zapytanie ='SELECT * FROM b_autor WHERE a_id IN (SELECT a_id FROM b_autorzyksiazka WHERE k_id = :id)';
@@ -77,8 +77,8 @@ $produkt = $sth->fetchAll();
           };
           ?>
 
-      </h3><h2>Wydawnictwo:</h2>
-      <h3>
+      </p><h4>Wydawnictwo:</h4>
+      <p>
         <?php
          $zapytanie ="SELECT nazwa_wydawnictwa FROM b_wydawnictwo WHERE w_id = '".$produkt[0]['wydawnictwo']."'";
         
@@ -93,13 +93,14 @@ $produkt = $sth->fetchAll();
 
           };
           ?>
-      </h3>
+      </p>
 
 
-    <div ><br>
+    <div >
         <?php
-        print "<h2>Dostepnych egzemplarzy:  {$produkt[0]['ilosc']}</h2> <br><br>";
-        echo "<form method=\"post\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\">
+        print "<h4>Dostepnych egzemplarzy:</h4>
+        <p>{$produkt[0]['ilosc']}</p>";
+        echo "<form method=\"post\" class=\"prawo\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\">
         <input type=\"submit\" value=\"Zarezerwuj książkę\"></form> <br>";
 ?>
         </div>
