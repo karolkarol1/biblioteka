@@ -14,8 +14,7 @@ require_once('../connect.php');
 
 $statement=$pdo->prepare("
     select month(z.data) as datac, sum(z.cena) as suma, year(z.data) as y
-    from s_zamowienia z
-    where z.czyoplacone=1
+    from b_rezerwacje z
 group by datac
 order by y ASC, datac ASC");
 
