@@ -75,7 +75,7 @@ require_once "../connect.php";
                 </div>
                 <br>
                 <div class="form-control">
-          <select data-placeholder="Autorzy" class="chosen-select" name="autorzy[]" multiple tabindex="4">
+          <select data-placeholder="Autorzy" class="chosen-select" name="autorzy" multiple tabindex="4">
             <option value=""></option>
 
 
@@ -116,6 +116,8 @@ require_once "../connect.php";
                 $addbook->bindParam(':wyd',$_POST['wyd_id']);
                 $addbook->bindParam(':ilosc',$_POST['ilosc']);
 
+
+
                 $addbook->execute();
 
                 // $addbook->debugDumpParams();
@@ -127,16 +129,18 @@ require_once "../connect.php";
 
 
                 $autorzy=$_POST['autorzy'];
+               
+             
 
-                foreach($autorzy as $row){                 
+                          
 
-                    $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:aid,:kid)");
-                    $addauthorbook->bindParam(':aid',$row);
-                    $addauthorbook->bindParam(':nazwa',$_POST['nazwa']);
-          $addauthorbook->bindParam(':obrazek',$_FILES['userfile']['name']);
+                    $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:a_id,:k_id)");
+                    $addauthorbook->bindParam(':a_id',$autorzy);
+                    $addauthorbook->bindParam(':k_id',$id_ksiazki);
+        //  $addauthorbook->bindParam(':obrazek',$_FILES['userfile']['name']);
                     $addauthorbook->execute();
 
-                }
+                
 
                 
                 $uploaddir = "../img/ksiazki/";
