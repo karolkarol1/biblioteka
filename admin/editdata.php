@@ -339,7 +339,7 @@ $obr=$_POST['obrazek'];
 
                         $pdo->query("DELETE from b_autorzyksiazka where k_id=$id");
 
-
+ 
                         print_r($autorzy);
 
                 foreach($autorzy as $row){                 
