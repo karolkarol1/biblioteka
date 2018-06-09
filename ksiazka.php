@@ -55,7 +55,7 @@ $produkt = $sth->fetchAll();
     
     
 
-<div class="obrazekksiazkaa"><img class="improduktksiazka" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"></div><div id="produktopis">
+<div class="calosc"><div class="obrazekksiazkaa"><img class="improduktksiazka" src="img/ksiazki/<?php echo $produkt[0]['obrazek'];?>"></div><div id="produktopis">
 <span><h4>Opis:</h4><?php echo $produkt[0]['opis'];?></span>
    
       <br>
@@ -104,6 +104,7 @@ $produkt = $sth->fetchAll();
         <input type=\"submit\" value=\"Zarezerwuj książkę\"></form> <br>";
 ?>
         </div>
+    </div>
     </div>
             
 

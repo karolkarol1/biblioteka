@@ -481,8 +481,13 @@ padding-left:100px;
 .improduktksiazka{
     float:left;
     margin-right: 10px;
+    width: 300px;
 }
 
 .prawo{
     text-align: right;
+}
+
+.calosc{
+    display:flex;
 }
