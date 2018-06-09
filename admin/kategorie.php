@@ -120,15 +120,15 @@ div.treeview {
     
     max-height: 256px;
     overflow:auto;
-	
-	padding: 4px;
-	
-	margin-bottom: 20px;
-	
-	color: #369;
-	
-	border: solid 1px;
-	border-radius: 4px;
+    
+    padding: 4px;
+    
+    margin-bottom: 20px;
+    
+    color: #369;
+    
+    border: solid 1px;
+    border-radius: 4px;
 }
 div.treeview ul:first-child:before {
     display: none;
@@ -138,7 +138,7 @@ div.treeview ul:first-child:before {
     padding:0;
     list-style:none;
     
-	color: #369;
+    color: #369;
 }
 .treeview ul {
     margin-left:1em;
@@ -201,56 +201,56 @@ div.treeview ul:first-child:before {
 <script>
     
 $.fn.extend({
-	treeview:	function() {
-		return this.each(function() {
-			// Initialize the top levels;
-			var tree = $(this);
-			
-			tree.addClass('treeview-tree');
-			tree.find('li').each(function() {
-				var stick = $(this);
-			});
-			tree.find('li').has("ul").each(function () {
-				var branch = $(this); //li with children ul
-				
-				branch.prepend("<i class='tree-indicator fa fa-arrow-right'></i>");
-				branch.addClass('tree-branch');
-				branch.on('click', function (e) {
-					if (this == e.target) {
-						var icon = $(this).children('i:first');
-						
-						icon.toggleClass("fa-arrow-down fa-arrow-right");
-						$(this).children().children().toggle();
-					}
-				})
-				branch.children().children().toggle();
-				
-				/**
-				 *	The following snippet of code enables the treeview to
-				 *	function when a button, indicator or anchor is clicked.
-				 *
-				 *	It also prevents the default function of an anchor and
-				 *	a button from firing.
-				 */
-				branch.children('.tree-indicator, button, a').click(function(e) {
-					branch.click();
-					
-					e.preventDefault();
-				});
-			});
-		});
-	}
+    treeview:   function() {
+        return this.each(function() {
+            // Initialize the top levels;
+            var tree = $(this);
+            
+            tree.addClass('treeview-tree');
+            tree.find('li').each(function() {
+                var stick = $(this);
+            });
+            tree.find('li').has("ul").each(function () {
+                var branch = $(this); //li with children ul
+                
+                branch.prepend("<i class='tree-indicator fa fa-arrow-right'></i>");
+                branch.addClass('tree-branch');
+                branch.on('click', function (e) {
+                    if (this == e.target) {
+                        var icon = $(this).children('i:first');
+                        
+                        icon.toggleClass("fa-arrow-down fa-arrow-right");
+                        $(this).children().children().toggle();
+                    }
+                })
+                branch.children().children().toggle();
+                
+                /**
+                 *  The following snippet of code enables the treeview to
+                 *  function when a button, indicator or anchor is clicked.
+                 *
+                 *  It also prevents the default function of an anchor and
+                 *  a button from firing.
+                 */
+                branch.children('.tree-indicator, button, a').click(function(e) {
+                    branch.click();
+                    
+                    e.preventDefault();
+                });
+            });
+        });
+    }
 });
 
 /**
- *	The following snippet of code automatically converst
- *	any '.treeview' DOM elements into a treeview component.
+ *  The following snippet of code automatically converst
+ *  any '.treeview' DOM elements into a treeview component.
  */
 $(window).on('load', function () {
-	$('.treeview').each(function () {
-		var tree = $(this);
-		tree.treeview();
-	});
+    $('.treeview').each(function () {
+        var tree = $(this);
+        tree.treeview();
+    });
 });
 </script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

@@ -24,7 +24,7 @@ require_once "../connect.php";
     <meta http-equiv="Content-Security-Policy" content="default-src &apos;self&apos;; script-src &apos;self&apos; https://ajax.googleapis.com; style-src &apos;self&apos;; img-src &apos;self&apos; data:">
 
 <div class="content-wrapper">
-    <div class="container-fluid">
+<div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -33,107 +33,100 @@ require_once "../connect.php";
         <li class="breadcrumb-item active">Zarządzanie autorami</li>
       </ol>
       <!-- Example DataTables Card-->
-    <div class="card mb-3">
-        <div class="card-header">
+      <div class="card mb-3">
+      <div class="card-header">
           <i class="fa fa-table"></i> Dodaj autora
         </div>
         <div class="container">
-            <form class="form-signin" id="addProduct" method="POST" action="ksiazki.php" ENCTYPE="multipart/form-data"><br>
-                <input type="text" name="imie" class="form-control" placeholder="imie" required autofocus>
-                <input type="text" name="Nazwisko" class="form-control" placeholder="nazwisko" required>
-                <div class="form-control">
-                <select data-placeholder="Kategoria" name="kat_id" class="chosen-select" tabindex="2" required>
-                <option value=""></option>
-
-                    <?php
-                        $categorys=$pdo->query("SELECT id, nazwa from b_kategorie");
-                
-                        foreach($categorys as $row){                 
-                    ?>
-	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwa']; ?></option>
-                    
-                    <?php }   
-                    ?>
-                </select>
-                </div>
-                <div class="form-control">
-                <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="2" required>
-                <option value=""></option>
-
-                    <?php
-                        $categorys=$pdo->query("SELECT w_id, nazwa_wydawnictwa from b_wydawnictwo");
-                
-                        foreach($categorys as $row){                 
-                    ?>
-	                   <option value="<?php echo $row['w_id']; ?>" ><?php echo $row['nazwa_wydawnictwa']; ?></option>
-                    
-                    <?php }   
-                    ?>
-                </select>
-                </div>
+            <form class="form-signin" id="addProduct" method="POST" action="autorzy.php" ENCTYPE="multipart/form-data"><br>
+                <input type="text" name="imie" class="form-control" placeholder="Imię" required autofocus>
+                <input type="text" name="nazwisko" class="form-control" placeholder="Nazwisko" required>
                 <br>
             
        
 
                 <br><br>
-                <input type="file" name="userfile" required><br><br>
-                <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dodaj Autora</button>
+                <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block btn-signin">Dodaj Autora</button>
             </form>
+         
         </div>
         <?php 
+                if(isset($_POST['submit'])){                   
+                    $addProduct=$pdo->prepare("INSERT INTO b_autor VALUES(null,:imie, :nazwisko)");
+                    $addProduct->bindParam(':imie',$_POST['imie']);
+                    $addProduct->bindParam(':nazwisko',$_POST['nazwisko']);
+                    $addProduct->execute();
+                    ?>
+                    <meta http-equiv="refresh" content="1">
 
-// print_r($_POST);
+                    <?php
 
-
-            if(isset($_POST['submit'])){
-
-
-
-                $addbook=$pdo->prepare("INSERT INTO b_autor VALUES(null,:imie,:nazwisko)");
-                $addbook->bindParam(':nazwa',$_POST['imie']);
-                $addbook->bindParam(':opis',$_POST['nazwisko']);
-            
-
-                $addbook->execute();
-
-                // $addbook->debugDumpParams();
-
-
-                // print_r($addbook);
-
-                $id_ksiazki = $pdo->lastInsertId();
-
-
-                $autorzy=$_POST['autorzy'];
-
-                foreach($autorzy as $row){                 
-
-                    $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:aid,:kid)");
-                    $addauthorbook->bindParam(':aid',$row);
-                    $addauthorbook->bindParam(':kid',$id_ksiazki);
-                    $addauthorbook->execute();
-
-                }
-
-                
-                $uploaddir = "../img/ksiazki/";
-                $uploadfile = $uploaddir . basename($_FILES["userfile"]["name"]);
-                
-                if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+}
+                    ?>
+        </div>
+        <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Modyfikuj autora</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Imię</th>
+                  <th>Nazwisko</th>
+                </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                  <th>ID</th>
+                  <th>Imię</th>
+                  <th>Nazwisko</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php
+                  $autorzy=$pdo->query('SELECT a_id, imie, nazwisko FROM b_autor');
+                  foreach($autorzy as $row){
                 ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Dodano</strong> poprawnie produkt.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                  <tr><td><?php echo $row['a_id']; ?></td><td><?php echo $row['imie']; ?></td><td><?php echo $row['nazwisko']; ?></td><td><button class="btn btn-lg btn-primary btn-block btn-signin" data-backdrop="false" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $row['a_id']; ?>">Edytuj</button><br><form method="POST" action="autorzy.php?a_id=<?php echo $row['a_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="delete" onclick="return confirm('Czy na pewno chcesz usunąć produkt ?')" value="Usuń"></form><br></td></tr>
+                <?php } 
+                    if(isset($_POST['delete'])){
+                        $id=$_GET['a_id'];
+                        $delete=$pdo->exec("DELETE FROM b_autor WHERE a_id=$id");
+                ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Usunięto</strong> autora o ID: <?php echo $_GET['a_id']; ?>.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <meta http-equiv="refresh" content="1">
+                <?php } ?>
+                  
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            </div>
+                            <div class="dash">
+
+                            </div>
+                        </div>
                     </div>
-                    <!-- <meta http-equiv="refresh" content="1"> -->
-                <?php 
-                } else {
-                echo "Upload failed";
-                }
-            }
-        ?>
+                  </div>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+        </div>
+        </div>
+        
+
 
     
 
@@ -149,7 +142,7 @@ require_once "../connect.php";
           var button = $(event.relatedTarget) // Button that triggered the modal
           var recipient = button.data('whatever') // Extract info from data-* attributes
           var modal = $(this);
-          var dataString = 'id=' + recipient;
+          var dataString = 'idd=10&id=' + recipient;
             $.ajax({
                 type: "GET",
                 url: "editdata.php",

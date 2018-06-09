@@ -103,6 +103,43 @@
             header("Location: http://$host$uri/$extra");
             exit;   
         }
+    }elseif($_GET['idd']==10){
+        $id=$_GET['id'];
+        $category= $pdo->prepare("SELECT imie, nazwisko FROM b_autor WHERE a_id=$id");
+        $category->execute();
+        $cat=$category->fetchAll();
+     ?>
+     <form method="POST" action="editdata.php?idd=10&id=<?php echo $id;?>" role="form" ENCTYPE="multipart/form-data">
+	   <div class="modal-body">
+            <div class="form-group">
+            <label for="imie">Imię</label>
+                <input type="text" class="form-control" id="id" name="imie" value="<?php echo $cat[0]['imie']; ?>" />
+                <input type="hidden" id="id" name="imie2" value="<?php echo $cat[0]['imie']; ?>" />
+                <br>
+                <label for="nazwisko">Nazwisko</label>
+                <input type="text" class="form-control" id="id" name="nazwisko" value="<?php echo $cat[0]['nazwisko']; ?>" />
+                <input type="hidden" id="id" name="nazwisko2" value="<?php echo $cat[0]['nazwisko']; ?>" />
+
+            </div>
+		</div>
+		<div class="modal-footer">
+			<button type="submit" name="aut_send" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+    </form>
+    <?php
+        if(isset($_POST['aut_send'])){
+            $changeKolejnosc=$pdo->prepare("UPDATE b_autor SET imie=:imie2, nazwisko=:nazwisko2 WHERE a_id=$id");
+            $changeKolejnosc->bindValue(':imie2',$_POST['imie']);
+            $changeKolejnosc->bindValue(':nazwisko2',$_POST['nazwisko']);
+            $changeKolejnosc->execute();
+
+            $host  = $_SERVER['HTTP_HOST'];
+            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            $extra = 'autorzy.php';
+            header("Location: http://$host$uri/$extra");
+            exit;   
+        }
     }
 
     elseif($_GET['idd']==3){

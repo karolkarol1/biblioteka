@@ -50,13 +50,14 @@ require_once "../connect.php";
                 
                         foreach($categorys as $row){                 
                     ?>
-	                   <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwa']; ?></option>
+                     <option value="<?php echo $row['id']; ?>" ><?php echo $row['nazwa']; ?></option>
                     
                     <?php }   
                     ?>
                 </select>
-                <br>
+                
                 </div>
+                <br>
                 <div class="form-control">
                 <select data-placeholder="Wydawnictwo" name="wyd_id" class="chosen-select" tabindex="2" required>
                 <option value=""></option>
@@ -66,7 +67,7 @@ require_once "../connect.php";
                 
                         foreach($categorys as $row){                 
                     ?>
-	                   <option value="<?php echo $row['w_id']; ?>" ><?php echo $row['nazwa_wydawnictwa']; ?></option>
+                     <option value="<?php echo $row['w_id']; ?>" ><?php echo $row['nazwa_wydawnictwa']; ?></option>
                     
                     <?php }   
                     ?>
@@ -83,7 +84,7 @@ require_once "../connect.php";
                 
                         foreach($autorzy as $row){                 
                     ?>
-	                   <option value="<?php echo $row['a_id']; ?>" ><?php echo $row['imie'].' '.$row['nazwisko']; ?></option>
+                     <option value="<?php echo $row['a_id']; ?>" ><?php echo $row['imie'].' '.$row['nazwisko']; ?></option>
                     
                     <?php }  ?>
 
@@ -131,7 +132,7 @@ require_once "../connect.php";
                     $addauthorbook=$pdo->prepare("INSERT INTO b_autorzyksiazka VALUES(:aid,:kid)");
                     $addauthorbook->bindParam(':aid',$row);
                     $addauthorbook->bindParam(':nazwa',$_POST['nazwa']);
-					$addauthorbook->bindParam(':obrazek',$_FILES['userfile']['name']);
+          $addauthorbook->bindParam(':obrazek',$_FILES['userfile']['name']);
                     $addauthorbook->execute();
 
                 }
