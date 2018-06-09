@@ -103,7 +103,47 @@
             header("Location: http://$host$uri/$extra");
             exit;   
         }
-    }elseif($_GET['idd']==10){
+    }
+
+elseif($_GET['idd']==7){
+        $id=$_GET['id'];
+        $category= $pdo->prepare("SELECT nazwa_wydawnictwa FROM b_wydawnictwo WHERE w_id=$id");
+        $category->execute();
+        $cat=$category->fetchAll();
+     ?>
+     <form method="POST" action="editdata.php?idd=7&id=<?php echo $id;?>" role="form" ENCTYPE="multipart/form-data">
+       <div class="modal-body">
+            <div class="form-group">
+            <label for="imie">Nazwa Wydawnictwa</label>
+                <input type="text" class="form-control" id="id" name="nazwa_wydawnictwa" value="<?php echo $cat[0]['nazwa_wydawnictwa']; ?>" />
+                <input type="hidden" id="id" name="imie2" value="<?php echo $cat[0]['nazwa_wydawnictwa']; ?>" />
+              
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="aut_send" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </form>
+    <?php
+        if(isset($_POST['aut_send'])){
+            $changeKolejnosc=$pdo->prepare("UPDATE b_wydawnictwo SET nazwa_wydawnictwa=:imie2 WHERE w_id=$id");
+            $changeKolejnosc->bindValue(':imie2',$_POST['nazwa_wydawnictwa']);
+            $changeKolejnosc->execute();
+
+            $host  = $_SERVER['HTTP_HOST'];
+            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            $extra = 'wydawnictwa.php';
+            header("Location: http://$host$uri/$extra");
+            exit;   
+        }
+    }
+
+
+
+
+
+    elseif($_GET['idd']==10){
         $id=$_GET['id'];
         $category= $pdo->prepare("SELECT imie, nazwisko FROM b_autor WHERE a_id=$id");
         $category->execute();
@@ -123,12 +163,12 @@
             </div>
 		</div>
 		<div class="modal-footer">
-			<button type="submit" name="aut_send" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
+			<button type="submit" name="qwe" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Edytuj</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>
     </form>
     <?php
-        if(isset($_POST['aut_send'])){
+        if(isset($_POST['qwe'])){
             $changeKolejnosc=$pdo->prepare("UPDATE b_autor SET imie=:imie2, nazwisko=:nazwisko2 WHERE a_id=$id");
             $changeKolejnosc->bindValue(':imie2',$_POST['imie']);
             $changeKolejnosc->bindValue(':nazwisko2',$_POST['nazwisko']);

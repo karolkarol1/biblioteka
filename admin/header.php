@@ -84,6 +84,13 @@ elseif($_SESSION['status']>0){
             <span class="nav-link-text">Autorzy</span>
             </a>
             </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Autorzy">
+            <a class="nav-link" href="wydawnictwa.php">
+            <i class="fa fa-fw fa-users"></i>
+            <span class="nav-link-text">Wydawnictwa</span>
+            </a>
+            </li>
           </ul>
           <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">

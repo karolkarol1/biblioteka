@@ -91,6 +91,7 @@ require_once "../connect.php";
 
           </select><br>
         </div>
+        <br>
         <input type="number" name="ilosc" class="form-control" placeholder="Ilość" required>
 
                 <br><br>

@@ -71,7 +71,7 @@ require_once "header.php";
         if(isset($_SESSION['status']))
 
 
-        echo "<article><h1>$title</h1>";
+        //echo "<article><h1>$title</h1>";
         
 
 
@@ -101,9 +101,9 @@ if( !$result && !$ksiazka ){
     
 echo 'Brak książek';
 }
-
+echo "<article><h1>$title</h1>";
         foreach ($ksiazka as $row)
-               echo "<a href=\"ksiazka.php?id=".$row[0]."\"><div class=\"ksiazka\"><span class=\"tytul\">".$row[1]."</span><br><img src=\"img/ksiazki/".$row[2]."\" alt=\"".$row[1]."\"></div></a>";
+               echo "<a href=\"ksiazka.php?id=".$row[0]."\"><div class=\"ksiazka\"><span class=\"tytul\">".$row[1]."</span><br><img src=\"img/ksiazki/".$row[2]."\" alt=\"".$row[1]."\"><br></div></a>";
 
         ?>
     
