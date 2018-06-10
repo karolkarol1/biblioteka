@@ -17,6 +17,10 @@ require_once "../connect.php";
         echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
     } 
 
+
+
+
+
 ?>
 <div class="content-wrapper">
     <div class="container-fluid">
@@ -27,6 +31,94 @@ require_once "../connect.php";
             <li class="breadcrumb-item active">Rezerwacje</li>
         </ol>
         <div class="card mb-3">
+
+
+          <i class="fa fa-table"> Dodaj rezerwację</i>
+        <div class="container">
+            <form class="form-signin" id="addProduct" method="POST" action="rezerwacje.php"><br>
+
+                <div class="form-control">
+                <select data-placeholder="Użytkownik" name="u_id" class="chosen-select" tabindex="2" required style="width:100%">
+                <option value=""></option>
+
+                    <?php
+                        $categorys=$pdo->query("SELECT u_id, login from b_uzytkownicy");
+                
+                        foreach($categorys as $row){                 
+                    ?>
+                     <option value="<?php echo $row['u_id']; ?>" ><?php echo $row['login']; ?></option>
+                    
+                    <?php }   
+                    ?>
+                </select>
+                
+                </div>
+                <br>
+                <div class="form-control">
+                <select data-placeholder="Książka" name="k_id" class="chosen-select" tabindex="2" required style="width:100%">
+                <option value=""></option>
+
+                    <?php
+                        $categorys=$pdo->query("SELECT k_id, tytul from b_ksiazki");
+                
+                        foreach($categorys as $row){                 
+                    ?>
+                     <option value="<?php echo $row['k_id']; ?>" ><?php echo $row['tytul']; ?></option>
+                    
+                    <?php }   
+                    ?>
+                </select>
+                </div>
+                <br>
+
+                <div class="form-control">
+                <select data-placeholder="Status" name="status" class="chosen-select" tabindex="2" required style="width:100%">
+                <option value="0">Zarezerwowana</option>
+                <option value="1">Wypożyczona</option>
+                <option value="2">Oddana</option>
+
+                </select>
+                </div>
+<?php
+        $datetime1 = new DateTime("now");
+        $d=$datetime1->format('Y-m-d H:i:s');
+
+        $datetime2=$datetime1->modify('+14 day');
+        $d2=$datetime2->format('Y-m-d H:i:s');
+
+
+
+?>
+Data początkowa:
+
+        <input type="text" name="data_poczatek" id="datetimepicker4" class="form-control" placeholder="Data początkowa" value="<?php echo $d ?>" required>
+Data końcowa:
+        <input type="text" name="data_koniec" class="form-control" placeholder="Data końcowa" value="<?php echo $d2 ?>" required>
+
+                <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dodaj rezerwację</button>
+            </form>
+        </div>
+
+
+<?php
+    if(isset($_POST['submit'])){
+
+
+
+        $addres=$pdo->prepare("INSERT INTO b_rezerwacje VALUES(null,:u_id,:status,:data_poczatek,:data_koniec,:id_ksiazki)");
+        $addres->bindParam(':u_id',$_POST['u_id']);
+        $addres->bindParam(':status',$_POST['status']);
+        $addres->bindParam(':data_poczatek',$_POST['data_poczatek']);
+        $addres->bindParam(':data_koniec',$_POST['data_koniec']);
+        $addres->bindParam(':id_ksiazki',$_POST['k_id']);
+
+        $addres->execute();
+
+echo '<meta http-equiv="refresh" content="1">';
+    }
+?>
+
+
                 <div class="card-header"><i class="fa fa-table"></i> Rezerwacje</div>
                 <div class="card-body">
                 <div class="table-responsive">
@@ -168,3 +260,16 @@ require_once "../connect.php";
             </div>
         </div>
     </div>
+    <script src="docsupport/jquery-3.2.1.min.js" type="text/javascript"></script>
+  <script src="chosen.jquery.js" type="text/javascript"></script>
+  <script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+  <script src="docsupport/init.js" type="text/javascript" charset="utf-8"></script>
+
+  <link rel="stylesheet" href="docsupport/style.css">
+  <link rel="stylesheet" href="docsupport/prism.css">
+  <link rel="stylesheet" href="chosen.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <script>
+
+

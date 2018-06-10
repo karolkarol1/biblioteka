@@ -45,6 +45,7 @@ $sth->execute(array(':id' => $_SESSION['id'],  ':nowy' => $nowypass,  ':haslo' =
 if (isset ($_GET['akcja'])){
     
         session_unset();
+        setcookie("status", "", time() - 3600);
 	$host  = $_SERVER['HTTP_HOST'];
 $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 $extra = 'index.php';
