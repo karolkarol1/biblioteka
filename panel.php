@@ -16,7 +16,7 @@ if(isset($_POST['rejestracja'])  ) {
         echo '<div class="error">Podane hasła różnią się od siebie</div>';
     }
     elseif (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL))
-        echo '<div class="error">Podano niepoprawny adres email</div>';    
+        echo '<div class="error">Podano niepoprawny adres email</div>';
 
     else {
     
@@ -100,6 +100,10 @@ $zalogowany = $sth->fetchAll();
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
             $extra = 'index.php';
+            if(isset($_SESSION['rezerwacja'])){
+                header("Location: http://$host$uri/ksiazkaReserv.php");
+            }
+            else
             header("Location: http://$host$uri/$extra");
         }
     }
@@ -137,7 +141,7 @@ $zalogowany = $sth->fetchAll();
 
             <p><input type="submit" name="rejestracja" value="Wyślij"></p>
 </form>
- </div>  
+ </div>
         </div>
 </article>
 

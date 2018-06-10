@@ -98,17 +98,24 @@ $produkt = $sth->fetchAll();
 
     <div >
         <?php
+        if($produkt[0]['ilosc'] != 0){
         print "<h4>Dostepnych egzemplarzy:</h4>
         <p>{$produkt[0]['ilosc']}</p>";
-        echo "<form method=\"post\" class=\"prawo\" action=\"ksiazka.php?dodaj=".$produkt[0]['k_id']."\">
+        echo "<form method=\"post\" class=\"prawo\" action=\"ksiazkaReserv.php\">
+        <input type=\"hidden\" value=".$produkt[0]['k_id']." name=\"id_ksiazka\">
+        <input type=\"hidden\" value=".$produkt[0]['ilosc']." name=\"ilosc\">
         <input type=\"submit\" value=\"Zarezerwuj książkę\"></form> <br>";
+        }
 ?>
         </div>
     </div>
     </div>
-            
-
 </article>
-
+        <?php
+            if(isset($_SESSION['alert'])){
+                echo $_SESSION['alert'];
+                unset($_SESSION['alert']);
+            }
+        ?>
   
 <?php require_once "footer.php";?>
