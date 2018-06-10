@@ -19,7 +19,7 @@ if (isset ($_SESSION['login'])){
     
 
     $sql = 'select * from b_kary kary JOIN b_rezerwacje r ON (kary.r_id=r.r_id) JOIN b_ksiazki ks ON(ks.k_id=r.id_ksiazki)
-    where kary.u_id=:id ORDER BY kary.k_id DESC';
+    where r.u_id=:id ORDER BY kary.k_id DESC';
     
     $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     

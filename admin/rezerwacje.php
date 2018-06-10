@@ -77,6 +77,7 @@ require_once "../connect.php";
                 <option value="1">Wypożyczona</option>
                 <option value="2">Oddana</option>
 
+
                 </select>
                 </div>
 <?php
@@ -172,13 +173,13 @@ echo '<meta http-equiv="refresh" content="1">';
                         <td><?php echo $row['tytul']; ?></td>
 
 <td><?php if($row['status']==0){ ?><form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Wypożyczona"><input type="hidden" name="status" value="1"></form>
-                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="status" value="2"></form>
+                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="datapoczatek" value="<?php echo $row['data_poczatek']; ?>"><input type="hidden" name="status" value="2"></form>
                           <?php
                         }
                         ?>
 
                         <?php if($row['status']==1){ ?><form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Zarezerwowana"><input type="hidden" name="status" value="0"></form>
-                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="status" value="2"></form>
+                          <form method="POST" action="rezerwacje.php?rez_id=<?php echo $row['r_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Oddana"><input type="hidden" name="datapoczatek" value="<?php echo $row['data_poczatek']; ?>"><input type="hidden" name="status" value="2"></form>
                           <?php
                         }
                         ?>
@@ -219,15 +220,71 @@ echo '<meta http-equiv="refresh" content="1">';
                                 <meta http-equiv="refresh" content="1">
                             <?php }
                             if(isset($_POST['changestatus'])){ 
+
+
+
+                                if($_POST['status']==1)
+                                {
+
+                                    $datetime1 = new DateTime("now");
+                                    $d=$datetime1->format('Y-m-d H:i:s');
+
+                                    $id=$_GET['rez_id'];
+                                    $chstatus=$pdo->prepare("UPDATE b_rezerwacje SET status=:s, data_poczatek=:dzis  WHERE r_id=:u_id");
+                                    $chstatus->bindValue(':u_id',$_GET['rez_id']);
+                                    $chstatus->bindValue(':s',$_POST['status']);
+                                    $chstatus->bindValue(':dzis',$d);
+                                    $chstatus->execute();  
+                                }
+
+                                if($_POST['status']==2)
+                                {
+
+                                    $datetime1 = new DateTime("now");
+                                    $d=$datetime1->format('Y-m-d H:i:s');
+
+                                    $id=$_GET['rez_id'];
+                                    $chstatus=$pdo->prepare("UPDATE b_rezerwacje SET status=:s, data_koniec=:dzis  WHERE r_id=:u_id");
+                                    $chstatus->bindValue(':u_id',$_GET['rez_id']);
+                                    $chstatus->bindValue(':s',$_POST['status']);
+                                    $chstatus->bindValue(':dzis',$d);
+                                    $chstatus->execute();  
+                                }
+
                                 $id=$_GET['rez_id'];
                                 $chstatus=$pdo->prepare("UPDATE b_rezerwacje SET status=:s  WHERE r_id=:u_id");
-                                $chstatus->bindValue(':s',0);
                                 $chstatus->bindValue(':u_id',$_GET['rez_id']);
                                 $chstatus->bindValue(':s',$_POST['status']);
                                 $chstatus->execute();
 
                                 $s=$_POST['status'];
 
+                                if(isset($_POST['datapoczatek'])){
+
+                                    $pocz=$_POST['datapoczatek'];
+
+
+                                    $datetime1 = new DateTime("now");
+                                    $datetime2 = new DateTime($pocz);
+                                    $interval = $datetime1->diff($datetime2);
+                                    $elapsed = $interval->format('%a');
+
+                                    if($elapsed>14){
+                                     
+                                        $przekroczonaliczbadni=$elapsed-14;
+                                        
+                                        $addkara=$pdo->prepare("INSERT INTO b_kary VALUES(null,:r_id,:cena,:oplacona)");
+                                        $addkara->bindParam(':r_id',$_GET['rez_id']);
+                                        $addkara->bindParam(':cena',$przekroczonaliczbadni*1);
+                                        $addkara->bindParam(':oplacona',0);
+                                
+                                        $addkara->execute();
+
+
+                                    }
+
+
+                                }
                             
                             ?>
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">

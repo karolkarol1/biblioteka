@@ -12,7 +12,7 @@ require_once('../connect.php');
     } 
 
 
-$statement=$pdo->prepare("select k2.nazwa nazwa, sum(zp.ilosc) nazwaa from s_zamowienia_produkty zp JOIN s_zamowienia z ON (zp.id_zamowienia=z.z_id) JOIN s_produkty p ON (zp.id_produktu=p.p_id) JOIN s_kategorie k ON(p.kat_id=k.id) JOIN s_kategorie k2 ON (k.id_rodzica=k2.id) WHERE MONTH(CURDATE())=MONTH(z.data) AND z.czyoplacone=1 group by k2.nazwa");
+$statement=$pdo->prepare("select kat.nazwa, sum(b.r_id) nazwaa from b_rezerwacje b JOIN b_ksiazki k ON(b.id_ksiazki=k.k_id) JOIN b_kategorie kat ON(k.kat_id=kat.id) WHERE MONTH(CURDATE())=MONTH(b.data_poczatek) group by kat.nazwa");
 
 $statement->execute();
 

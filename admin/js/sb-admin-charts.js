@@ -3,7 +3,6 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 // -- Area Chart Example
-var ctx = document.getElementById("myAreaChart");
 var ctx2 = document.getElementById("myAreaChart2");
 
 var dane;
@@ -14,12 +13,12 @@ async: false
 });
 
 $.getJSON(
-    'http://lap-kom.2ap.pl/admin/statystyki.php', 
+    'http://localhost/biblioteka/admin/statystyki.php', 
     function(data) { dane=data; }
 );
 
 $.getJSON(
-    'http://lap-kom.2ap.pl/admin/statystyki2.php', 
+    'http://localhost/biblioteka/admin/statystyki2.php', 
     function(data) { dane2=data; }
 );
 
@@ -32,60 +31,12 @@ var maxx2=Math.max.apply(Math,dane2[1]);
 
 maxx2=Math.floor((maxx2+999)/1000)*1000;
 
- 
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: dane[0],
-    datasets: [{
-      label: "PLN",
-      lineTension: 0.3,
-      backgroundColor: "rgba(2,117,216,0.2)",
-      borderColor: "rgba(2,117,216,1)",
-      pointRadius: 5,
-      pointBackgroundColor: "rgba(2,117,216,1)",
-      pointBorderColor: "rgba(255,255,255,0.8)",
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(2,117,216,1)",
-      pointHitRadius: 20,
-      pointBorderWidth: 2,
-      data: dane[1],
-    }],
-  },
-  options: {
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          min: 0,
-          max: maxx,
-          maxTicksLimit: 5
-        },
-        gridLines: {
-          color: "rgba(0, 0, 0, .125)",
-        }
-      }],
-    },
-    legend: {
-      display: false
-    }
-  }
-});
+
 // -- area chart2
 
 
 $.getJSON(
-    'http://lap-kom.2ap.pl/admin/statystyki3.php', 
+    'http://localhost/biblioteka/admin/statystyki3.php', 
     function(data) { dane3=data; }
 );
 
@@ -194,7 +145,7 @@ var myLineChart = new Chart(ctx, {
 
 
 $.getJSON(
-    'http://lap-kom.2ap.pl/admin/statystyki4.php', 
+    'http://localhost/biblioteka/admin/statystyki4.php', 
     function(data) { dane4=data; }
 );
 

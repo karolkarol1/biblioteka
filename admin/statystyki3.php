@@ -12,11 +12,9 @@ require_once('../connect.php');
     } 
 
 
-$statement=$pdo->prepare("
-    select date(z.data) as datac, COUNT(z.z_id) as suma
-    from s_zamowienia z
-    where z.czyoplacone=1
-    group by datac");
+$statement=$pdo->prepare("select date(z.data_poczatek) as datac, COUNT(z.r_id) as suma
+from b_rezerwacje z
+group by datac");
 
 $statement->execute();
 

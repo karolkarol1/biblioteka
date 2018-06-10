@@ -16,18 +16,13 @@ require_once('header.php');
         <li class="breadcrumb-item active">Statystyki</li>
       </ol>
       <!-- Area Chart Example-->
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Statystyki sprzedaży [PLN]</div>
-        <div class="card-body">
-          <canvas id="myAreaChart" width="100%" height="30"></canvas>
-        </div>      </div>
+
         
         
               <!-- Area Chart2 Example-->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-area-chart"></i> Statystyki sprzedaży [Liczba zamówień]</div>
+          <i class="fa fa-area-chart"></i> Statystyki rezerwacji względem dni</div>
         <div class="card-body">
           <canvas id="myAreaChart2" width="100%" height="30"></canvas>
         </div>      </div>
@@ -36,7 +31,7 @@ require_once('header.php');
                   <!-- Example Bar Chart Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bar-chart"></i> Statystyki sprzedaży z miesięcy [PLN]</div>
+              <i class="fa fa-bar-chart"></i> Statystyki rezerwacji względem miesięcy</div>
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-8 my-auto">
@@ -48,7 +43,7 @@ require_once('header.php');
                 <div class="col-lg-4">
                   <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-pie-chart"></i> Statystyki sprzedaży w ciągu miesiąca względem kategorii</div>
+              <i class="fa fa-pie-chart"></i> Statystyki rezerwacji względem kategorii z ostatniego miesiąca</div>
             <div class="card-body">
               <canvas id="myPieChart" width="100%" height="100"></canvas>
             </div>          </div>
