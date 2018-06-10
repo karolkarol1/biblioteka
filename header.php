@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>LapKom - <?php echo $title;
+    <title>Biblioteka - <?php echo $title;
         
         require_once "connect.php";
         try
