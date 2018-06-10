@@ -70,7 +70,7 @@ $oplacona="<form name='do_platnosci' method='POST' action='https://ssl.dotpay.pl
 <input type='hidden' name='opis' value=".$row['k_id']." />
 <input type='hidden' name='amount' value=".$row['cena']." />
 <input type='hidden' name='type' value='0' /> 
-<input type='hidden' name='URL' value='http://lap-kom.2ap.pl/koniec.php' /> 
+<input type='hidden' name='URL' value='http://bibliotekaa.2ap.pl/koniec.php' /> 
 
 <input type='submit' name='bt' value='Opłać' /> </form>";
 
