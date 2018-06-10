@@ -51,7 +51,7 @@ var myLineChart2 = new Chart(ctx2, {
   data: {
     labels: dane3[0],
     datasets: [{
-      label: "Ilość zamówień",
+      label: "Ilość",
       lineTension: 0.3,
       backgroundColor: "rgba(2,117,216,0.2)",
       borderColor: "rgba(2,117,216,1)",
