@@ -98,7 +98,9 @@ $produkt = $sth->fetchAll();
 
     <div >
         <?php
-        if($produkt[0]['ilosc'] != 0){
+
+
+        if(($produkt[0]['ilosc'] != 0) && (isset($_SESSION['status']))){
         print "<h4>Dostepnych egzemplarzy:</h4>
         <p>{$produkt[0]['ilosc']}</p>";
         echo "<form method=\"post\" class=\"prawo\" action=\"ksiazkaReserv.php\">

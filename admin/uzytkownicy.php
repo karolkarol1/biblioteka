@@ -61,6 +61,9 @@ require_once "../connect.php";
                       </tfoot>
                       <tbody>
                             <?php
+
+echo $_SESSION['status'];
+
                                 $users = $pdo->query("SELECT * FROM b_uzytkownicy");
                                 foreach($users as $row){     
                             ?>
@@ -80,13 +83,13 @@ require_once "../connect.php";
                           
                           
 
-                          <?php if($row['status']==1){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń bibliotekarza"><input type="hidden" name="status" value="0"></form><?php }
-                          else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Aktywuj bibliotekarza"><input type="hidden" name="status" value="1"></form><?php }
+                          <?php if(($row['status']==1) && ($_SESSION['status']==2)){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń bibliotekarza"><input type="hidden" name="status" value="0"></form><?php }
+                          else if($_SESSION['status']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Aktywuj bibliotekarza"><input type="hidden" name="status" value="1"></form><?php }
                           ?><br>
 
 
-                          <?php if($row['status']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń admina"><input type="hidden" name="status" value="0"></form><?php }
-                          else{ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Dodaj admina"><input type="hidden" name="status" value="2"></form><?php }
+                          <?php if(($row['status']==2) && ($_SESSION['status']==2)){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Usuń admina"><input type="hidden" name="status" value="0"></form><?php }
+                          else if($_SESSION['status']==2){ ?><form method="POST" action="uzytkownicy.php?id_user=<?php echo $row['u_id']; ?>"><input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="changestatus" value="Dodaj admina"><input type="hidden" name="status" value="2"></form><?php }
                           ?><br>
                         
                         
