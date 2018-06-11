@@ -63,13 +63,13 @@
         
     if (isset ($_SESSION['login'])){
 
-        echo "<a href=\"#\"><img src=\"img/member.png\" alt=\"logowanie\">Witaj ".$_SESSION['login']."<br>Ustawienia</a>";
+        echo "<a href=\"#\"><img src=\"img/member.png\" alt=\"logowanie\">Witaj ".$_SESSION['login']."<br>Profil</a>";
         
     echo '<div id="dplog">
     <ul class="plog">
         <li class="plog"><a href="ustawienia.php">Ustawienia</a></li>
-        <li class="plog"><a href="rezerwacje.php">Rezerwacje</a></li>
-        <li class="plog"><a href="kary.php">Naliczone kary</a></li>
+        <li class="plog"><a href="rezerwacje.php">Moje rezerwacje</a></li>
+        <li class="plog"><a href="kary.php">Podgląd naliczonych kar</a></li>
 
         <li class="plog"><a href="ustawienia.php?akcja=wyloguj">Wyloguj</a></li>  ';
         if (isset ($_SESSION['status']))
