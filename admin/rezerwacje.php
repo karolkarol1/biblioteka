@@ -59,7 +59,7 @@ require_once "../connect.php";
                 <option value=""></option>
 
                     <?php
-                        $categorys=$pdo->query("SELECT k_id, tytul from b_ksiazki");
+                        $categorys=$pdo->query("SELECT k_id, tytul from b_ksiazki where ilosc>0");
                 
                         foreach($categorys as $row){                 
                     ?>
@@ -103,6 +103,32 @@ Data końcowa:
 
 <?php
     if(isset($_POST['submit'])){
+
+        $idk=$_POST['k_id'];
+
+
+if($_POST['status']==0){
+
+
+
+    $pdo->query("UPDATE b_ksiazki SET ilosc=ilosc-1 WHERE k_id=$idk");
+    
+
+}
+else if($_POST['status']==1){
+
+    $pdo->query("UPDATE b_ksiazki SET ilosc=ilosc-1 WHERE k_id=$idk");
+
+
+}
+
+else if($_POST['status']==2){
+
+    $pdo->query("UPDATE b_ksiazki SET ilosc=ilosc+1 WHERE k_id=$idk");
+
+}
+
+
 
 
 
@@ -249,6 +275,10 @@ echo '<meta http-equiv="refresh" content="1">';
                                     $chstatus->bindValue(':s',$_POST['status']);
                                     $chstatus->bindValue(':dzis',$d);
                                     $chstatus->execute();  
+
+
+
+
                                 }
 
                                 $id=$_GET['rez_id'];
@@ -271,14 +301,21 @@ echo '<meta http-equiv="refresh" content="1">';
 
                                     if($elapsed>14){
                                      
-                                        $przekroczonaliczbadni=$elapsed-14;
+
+
+                                        $p=$elapsed-14;
+                                        
+
+
                                         
                                         $addkara=$pdo->prepare("INSERT INTO b_kary VALUES(null,:r_id,:cena,:oplacona)");
-                                        $addkara->bindParam(':r_id',$_GET['rez_id']);
-                                        $addkara->bindParam(':cena',$przekroczonaliczbadni*1);
-                                        $addkara->bindParam(':oplacona',0);
+                                        $addkara->bindValue(':r_id',$_GET['rez_id']);
+                                        $addkara->bindValue(':cena',$p);
+                                        $addkara->bindValue(':oplacona',0);
                                 
                                         $addkara->execute();
+
+
 
 
                                     }

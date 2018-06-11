@@ -99,10 +99,13 @@ $produkt = $sth->fetchAll();
     <div >
         <?php
 
+print "<h4>Dostepnych egzemplarzy:</h4>
+<p>{$produkt[0]['ilosc']}</p>";
 
-        if(($produkt[0]['ilosc'] != 0) && (isset($_SESSION['status']))){
-        print "<h4>Dostepnych egzemplarzy:</h4>
-        <p>{$produkt[0]['ilosc']}</p>";
+if(isset($_SESSION['status']))
+
+        if(($produkt[0]['ilosc'] != 0) && ($_SESSION['status']>-1)){
+
         echo "<form method=\"post\" class=\"prawo\" action=\"ksiazkaReserv.php\">
         <input type=\"hidden\" value=".$produkt[0]['k_id']." name=\"id_ksiazka\">
         <input type=\"hidden\" value=".$produkt[0]['ilosc']." name=\"ilosc\">
